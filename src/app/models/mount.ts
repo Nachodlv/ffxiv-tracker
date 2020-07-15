@@ -3,6 +3,6 @@ export class Mount {
   }
 
   static fromJson(json: any): Mount {
-    return new Mount(json.Icon, json.Name);
+    return new Mount(json.IconSmall != null ? `https://xivapi.com${json.IconSmall}` : json.Icon, json.Name);
   }
 }

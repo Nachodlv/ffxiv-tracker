@@ -1,11 +1,28 @@
+<div class="form-check" *ngFor="let pack of packs">
+  <input [(ngModel)]="pack.selected" class="form-check-input" type="checkbox" value="" id="defaultCheck1" (change)="checkboxClicked($event, pack)">
+  <label class="form-check-label" for="defaultCheck1">
+    {{pack.mountPack.name}}
+  </label>
+</div>
+
 <div class="col-12" *ngIf="players$ | async as players">
-    <div class="player-name" *ngFor="let player of players">
-      {{player.name}}
-      <div class="row" *ngIf="player.mounts && player.mounts | async as mounts">
+  <div *ngFor="let player of players">
+    <div class="player-name">{{player.name}}</div>
+    <ng-container *ngIf="player.mounts && player.mounts | async as mounts">
+      <div class="row" *ngIf="!packSelected">
         <div class="col-auto icon-container" *ngFor="let mount of mounts" [tooltip]="mount.name">
           <img [src]="mount.icon">
         </div>
       </div>
-    </div>
-  <br>
+      <div class="row" *ngIf="packSelected">
+        <ng-container *ngFor="let mount$ of packSelected.mounts$">
+          <div *ngIf="mount$ | async as mount" class="col-auto icon-container"
+               [tooltip]="mount.name">
+            <img [src]="mount.icon" [alt]="mount.name" [class.icon-grayed]="!(mount| hasMount: mounts)">
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <br>
+  </div>
 </div>
