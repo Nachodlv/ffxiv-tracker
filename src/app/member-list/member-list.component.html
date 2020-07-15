@@ -1,0 +1,11 @@
+<div class="col-12" *ngIf="players$ | async as players">
+    <div class="player-name" *ngFor="let player of players">
+      {{player.name}}
+      <div class="row" *ngIf="player.mounts && player.mounts | async as mounts">
+        <div class="col-auto icon-container" *ngFor="let mount of mounts" [tooltip]="mount.name">
+          <img [src]="mount.icon">
+        </div>
+      </div>
+    </div>
+  <br>
+</div>
