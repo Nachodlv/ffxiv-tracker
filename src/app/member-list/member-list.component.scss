@@ -1,9 +1,15 @@
-.player-name {
-  font-weight: bold;
+#search-input {
+  margin-left: 10px;
 }
-.icon-container {
-  padding: 10px;
-}
-.icon-grayed {
-  filter: grayscale(1);
+#member-list {
+  .player-name {
+    font-weight: bold;
+  }
+  .icon-container {
+    padding: 10px;
+  }
+  .icon-grayed {
+    filter: grayscale(1);
+  }
+
 }

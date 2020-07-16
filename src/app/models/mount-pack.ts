@@ -8,9 +8,8 @@ export class MountPack {
   }
 }
 
-const lolPack: MountPack = new MountPack('1', 'Lol Pack', [
+const cylPack: MountPack = new MountPack('1', 'Cyl Pack', [
   '186',
-  '1'
 ]);
 
 const farmPack: MountPack = new MountPack('2', 'Farm Pack', [
@@ -43,8 +42,7 @@ const farmPack: MountPack = new MountPack('2', 'Farm Pack', [
 ]);
 
 export const Packs: MountPack [] = [
-  lolPack,
-  farmPack
+  farmPack, cylPack,
 ];
 
 
