@@ -11,5 +11,14 @@
   .icon-grayed {
     filter: grayscale(1);
   }
+}
 
+.player-loader {
+  height: 100px;
+  position: relative;
+}
+
+.item-loader {
+  height: 60px;
+  width: 60px;
 }

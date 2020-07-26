@@ -1,29 +1,50 @@
 <div>
   <input id="search-input" [(ngModel)]="searchInput" class="form-check-input col-6" type="text" value=""
          placeholder="Search by Name or Mount...">
-  <app-pack-selector class="col-6" (packSelected)="packSelected = $event"></app-pack-selector>
+  <app-pack-selector class="col-6" (packSelected)="packSelected = $event" [packs]="packs"></app-pack-selector>
 </div>
 
-
+<div *ngIf="totalPlayers > 0 && totalPlayers != playersLoaded" class="col-sm-4">
+  <div class="ml-1 mb-2">
+    <span>Loading mounts</span>
+    <progressbar [max]="totalPlayers" [value]="playersLoaded" type="primary" [striped]="true"
+                 [animate]="true">{{playersLoaded}} / {{totalPlayers}}</progressbar>
+  </div>
+</div>
 <div class="col-12" *ngFor="let player  of players$ | async" id="member-list">
   <ng-container *ngIf="player.mounts && player.mounts | async as mounts">
     <ng-container *ngIf="(player | searchPlayers : searchInput) || ((mounts | searchMounts: searchInput).length > 0)">
       <div class="player-name">{{player.name}}</div>
       <div class="row" *ngIf="!packSelected">
-        <div class="col-auto icon-container" *ngFor="let mount of ((player | searchPlayers : searchInput)? mounts : mounts | searchMounts: searchInput)"
-             [tooltip]="mount.name">
-          <img [src]="mount.icon">
-        </div>
+        <ng-container
+             *ngFor="let mount of ((player | searchPlayers : searchInput)? mounts : mounts | searchMounts: searchInput)">
+          <app-item-icon [mount]="mount"></app-item-icon>
+        </ng-container>
       </div>
       <div class="row" *ngIf="packSelected">
         <ng-container *ngFor="let mount$ of packSelected.mounts$">
-          <div *ngIf="((player | searchPlayers : searchInput) || ([mount$|async]|searchMounts: searchInput).length > 0) && mount$ | async as mount" class="col-auto icon-container"
-               [tooltip]="mount.name">
-            <img [src]="mount.icon" [alt]="mount.name" [class.icon-grayed]="!(mount| hasMount: mounts)">
-          </div>
+          <ng-container
+            *ngIf="((player | searchPlayers : searchInput) || ([mount$|async]|searchMounts: searchInput).length > 0) && mount$ | async as mount; else itemLoader">
+            <app-item-icon [mount]="mount" [mountAvailable]="mount| hasMount: mounts"></app-item-icon>
+          </ng-container>
         </ng-container>
       </div>
       <br>
     </ng-container>
   </ng-container>
 </div>
+
+<!--LOADERS-->
+<div class="player-loader" *ngIf="totalPlayers > 0 && totalPlayers != playersLoaded">
+  <ngx-spinner size="medium" [fullScreen]="false" color="#000000" bdColor="#ffffff" type="ball-fall"></ngx-spinner>
+</div>
+<ng-template #itemLoader>
+  <div class="item-loader col-auto">
+    <ngx-spinner size="small" [fullScreen]="false" color="#000000" bdColor="#ffffff"
+                 type="ball-fall"></ngx-spinner>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="totalPlayers == 0">
+  <ngx-spinner [fullScreen]="true" type="ball-spin-clockwise"></ngx-spinner>
+</ng-container>

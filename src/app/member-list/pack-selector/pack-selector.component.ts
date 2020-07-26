@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MountPack, Packs} from '../../models/mount-pack';
 import {Observable} from 'rxjs';
 import {Mount} from '../../models/mount';
@@ -10,37 +10,23 @@ import {ItemService} from '../../services/item-service/item.service';
   styleUrls: ['./pack-selector.component.scss']
 })
 export class PackSelectorComponent implements OnInit {
-
-  packs: { mountPack: MountPack, selected: boolean }[] = [];
+  packs: PackCheckBox[] = [];
 
   @Output() packSelected = new EventEmitter<MountPack>();
+
+  @Input('packs') set setPacks(packs: MountPack[]) {
+    this.packs = packs.map(pack => new PackCheckBox(pack));
+  }
 
   constructor(
     private itemService: ItemService) {
   }
 
   ngOnInit(): void {
-    this.initializePacks();
-
   }
 
-  initializePacks(): void {
-    this.packs = Packs.map(pack => {
-      return {
-        mountPack: pack, selected: false
-      };
-    });
-    this.packs.forEach(pack => {
-      const observables: Observable<Mount>[] = [];
-      pack.mountPack.ids.forEach(mount => {
-        this.itemService.fetchMount(mount);
-        observables.push(this.itemService.getMount(mount));
-      });
-      pack.mountPack.mounts$ = observables;
-    });
-  }
 
-  checkboxClicked(event: any, packSelected: { mountPack: MountPack, selected: boolean }): void {
+  checkboxClicked(event: any, packSelected: PackCheckBox): void {
     packSelected.selected = event.target.checked;
     if (packSelected.selected) {
       this.packs.forEach(pack => {
@@ -48,9 +34,27 @@ export class PackSelectorComponent implements OnInit {
           pack.selected = false;
         }
       });
+      if (!packSelected.initialized) {
+        this.initializePack(packSelected);
+      }
       this.packSelected.emit(packSelected.mountPack);
     } else {
       this.packSelected.emit(undefined);
     }
+  }
+
+  private initializePack(pack: PackCheckBox): void {
+    const observables: Observable<Mount>[] = [];
+    pack.mountPack.ids.forEach(mount => {
+      this.itemService.fetchMount(mount);
+      observables.push(this.itemService.getMount(mount));
+    });
+    pack.mountPack.mounts$ = observables;
+    pack.initialized = true;
+  }
+}
+
+class PackCheckBox {
+  constructor(public mountPack: MountPack, public selected: boolean = false, public initialized: boolean = false) {
   }
 }
