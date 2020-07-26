@@ -1,3 +1,6 @@
+@angular/animations
+MIT
+
 @angular/common
 MIT
 
@@ -63,6 +66,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+
+ngx-spinner
+MIT
 
 rxjs
 Apache-2.0
