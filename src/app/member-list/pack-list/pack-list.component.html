@@ -1,10 +1,8 @@
 <div class="row">
-  <ng-container *ngFor="let mount$ of packSelected.mounts$">
+  <ng-container *ngFor="let item of (playerNameMatched ? packItems : itemsFiltered)">
     <ng-container
       *ngIf="(playerNameMatched || itemsFiltered.length > 0)">
-      <ng-container *ngIf="mount$ | async as item">
-        <app-item-icon [item]="item" [mountAvailable]="item| hasItem: items"></app-item-icon>
-      </ng-container>
+      <app-item-icon [item]="item" [mountAvailable]="item| hasItem: items"></app-item-icon>
     </ng-container>
   </ng-container>
   <div *ngIf="!loaded" class="item-loader col-auto">

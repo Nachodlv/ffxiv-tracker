@@ -18,7 +18,6 @@ export class ItemListComponent implements OnInit, OnChanges {
 
   itemFiltered: Item[];
 
-
   constructor(private searchItemsPipe: SearchItemsPipe) {
   }
 
@@ -30,7 +29,7 @@ export class ItemListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const change = changes.searchInput;
-    if (!this.shouldFilter || !change || change.previousValue === change.currentValue || !change.currentValue) {
+    if (!this.shouldFilter || !change || change.previousValue === change.currentValue ) {
       return;
     }
     this.itemFiltered = this.searchItemsPipe.transform(this.items, change.currentValue);

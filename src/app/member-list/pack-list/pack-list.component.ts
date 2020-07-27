@@ -22,8 +22,8 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
 
   itemsFiltered: Item[] = [];
   loaded = false;
+  packItems: Item[] = [];
 
-  private packItems: Item[] = [];
   private subscription: Subscription;
 
   constructor(private searchItemsPipe: SearchItemsPipe) {
@@ -38,7 +38,7 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     const change = changes.searchInput;
-    if (this.playerNameMatched || !change || change.previousValue === change.currentValue || !change.currentValue) {
+    if (this.playerNameMatched || !change || change.previousValue === change.currentValue) {
       return;
     }
 
