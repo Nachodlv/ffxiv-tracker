@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs';
-import {Mount} from '../../models/mount';
+import {Item} from '../../models/item';
 import {FfxivHttpClientService} from '../ffxiv-http-client/ffxiv-http-client.service';
 import {map} from 'rxjs/operators';
 
@@ -11,15 +11,15 @@ export class ItemService {
 
   private mountUrl = 'Mount/';
 
-  private mountsSubject = new Map<string, ReplaySubject<Mount>>();
-  private mounts = new Map<string, Mount>();
+  private mountsSubject = new Map<string, ReplaySubject<Item>>();
+  private mounts = new Map<string, Item>();
 
-  mounts$ = new Map<string, Observable<Mount>>();
+  mounts$ = new Map<string, Observable<Item>>();
 
   constructor(private ffxivHttpClientService: FfxivHttpClientService) {
   }
 
-  getMount(id: string): Observable<Mount> {
+  getMount(id: string): Observable<Item> {
     if (!this.mountsSubject.has(id)) {
       this.fetchMount(id);
     }
@@ -28,16 +28,23 @@ export class ItemService {
 
   fetchMount(id: string): void {
     if (!this.mountsSubject.get(id)) {
-      this.mountsSubject.set(id, new ReplaySubject<Mount>());
+      this.mountsSubject.set(id, new ReplaySubject<Item>());
     }
     if (!this.mounts.has(id)) {
-      this.makeFetchMountRequest(id).subscribe(value => this.mountsSubject.get(id).next(value));
+      this.makeFetchMountRequest(id).subscribe(value => {
+        this.nextValue(id, value);
+      });
     } else {
-      this.mountsSubject.get(id).next(this.mounts.get(id));
+      this.nextValue(id, this.mounts.get(id));
     }
   }
 
-  makeFetchMountRequest(id: string): Observable<Mount> {
-    return this.ffxivHttpClientService.get(`${this.mountUrl}${id}`).pipe(map(value => Mount.fromJson(value)));
+  private makeFetchMountRequest(id: string): Observable<Item> {
+    return this.ffxivHttpClientService.get(`${this.mountUrl}${id}`).pipe(map(value => Item.fromJson(value)));
+  }
+
+  private nextValue(id: string, value: Item): void {
+    this.mountsSubject.get(id).next(value);
+    this.mountsSubject.get(id).complete();
   }
 }

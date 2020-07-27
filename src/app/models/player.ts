@@ -1,8 +1,10 @@
 import {Observable} from 'rxjs';
-import {Mount} from './mount';
+import {Item} from './item';
+import {PlayerExtraInformation} from './player-extra-information';
 
 export class Player {
-  public mounts: Observable<Mount[]>;
+  public extraInformation$: Observable<PlayerExtraInformation>;
+
   constructor(public avatar: string,
               public id: string,
               public name: string) {

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Mount} from '../../models/mount';
+import {Item} from '../../models/item';
 
 @Component({
   selector: 'app-item-icon',
@@ -7,7 +7,7 @@ import {Mount} from '../../models/mount';
   styleUrls: ['./item-icon.component.scss']
 })
 export class ItemIconComponent implements OnInit {
-  @Input() mount: Mount;
+  @Input() item: Item;
   @Input() mountAvailable = true;
 
   constructor() {

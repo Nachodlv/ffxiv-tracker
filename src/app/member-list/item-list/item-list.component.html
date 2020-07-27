@@ -1,0 +1,6 @@
+<div class="row">
+  <ng-container
+    *ngFor="let item of (shouldFilter? itemFiltered : items)">
+    <app-item-icon [item]="item"></app-item-icon>
+  </ng-container>
+</div>

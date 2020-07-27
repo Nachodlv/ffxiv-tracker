@@ -1,24 +1,27 @@
-#search-input {
-  margin-left: 10px;
+#settings-container {
+  padding: 10px;
+
+  #search-input {
+    margin-left: 10px;
+  }
+
+  #item-type {
+    padding-left: 25px;
+
+    #mount-type {
+      padding-left: 0;
+    }
+  }
 }
+
+
 #member-list {
   .player-name {
     font-weight: bold;
-  }
-  .icon-container {
-    padding: 10px;
-  }
-  .icon-grayed {
-    filter: grayscale(1);
   }
 }
 
 .player-loader {
   height: 100px;
   position: relative;
-}
-
-.item-loader {
-  height: 60px;
-  width: 60px;
 }

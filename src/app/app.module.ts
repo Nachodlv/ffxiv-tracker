@@ -5,25 +5,29 @@ import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {MemberListComponent} from './member-list/member-list.component';
-import {HasMountPipe} from './pipes/has-mount.pipe';
 import {FormsModule} from '@angular/forms';
 import {PackSelectorComponent} from './member-list/pack-selector/pack-selector.component';
 import {SearchPlayersPipe} from './pipes/search-players.pipe';
-import {SearchMountsPipe} from './pipes/search-mounts.pipe';
 import {ProgressbarModule} from 'ngx-bootstrap/progressbar';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemIconComponent } from './member-list/item-icon/item-icon.component';
+import { ItemListComponent } from './member-list/item-list/item-list.component';
+import { PackListComponent } from './member-list/pack-list/pack-list.component';
+import {SearchItemsPipe} from './pipes/search-items.pipe';
+import {HasItemPipe} from './pipes/has-item.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     MemberListComponent,
-    HasMountPipe,
+    HasItemPipe,
     PackSelectorComponent,
     SearchPlayersPipe,
-    SearchMountsPipe,
+    SearchItemsPipe,
     ItemIconComponent,
+    ItemListComponent,
+    PackListComponent,
   ],
   imports: [
     BrowserModule,

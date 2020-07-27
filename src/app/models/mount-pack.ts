@@ -1,8 +1,8 @@
-import {Mount} from './mount';
+import {Item} from './item';
 import {Observable} from 'rxjs';
 
 export class MountPack {
-  public mounts$: Observable<Mount>[];
+  public mounts$: Observable<Item>[];
 
   constructor(public id: string, public name: string, public ids: string[]) {
   }

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MountPack, Packs} from '../../models/mount-pack';
 import {Observable} from 'rxjs';
-import {Mount} from '../../models/mount';
+import {Item} from '../../models/item';
 import {ItemService} from '../../services/item-service/item.service';
 
 @Component({
@@ -44,7 +44,7 @@ export class PackSelectorComponent implements OnInit {
   }
 
   private initializePack(pack: PackCheckBox): void {
-    const observables: Observable<Mount>[] = [];
+    const observables: Observable<Item>[] = [];
     pack.mountPack.ids.forEach(mount => {
       this.itemService.fetchMount(mount);
       observables.push(this.itemService.getMount(mount));

@@ -1,6 +1,6 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {Player} from '../models/player';
-import {Mount} from '../models/mount';
+import {Item} from '../models/item';
 
 @Pipe({
   name: 'searchPlayers'

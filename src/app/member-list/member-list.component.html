@@ -1,35 +1,52 @@
-<div>
-  <input id="search-input" [(ngModel)]="searchInput" class="form-check-input col-6" type="text" value=""
+<div id="settings-container">
+  <input id="search-input" [(ngModel)]="searchInput" class="col-6" type="text" value=""
          placeholder="Search by Name or Mount...">
-  <app-pack-selector class="col-6" (packSelected)="packSelected = $event" [packs]="packs"></app-pack-selector>
+  <div class="row" id="item-type">
+    <div class="form-check col-auto" id="mount-type">
+      <input type="radio" name="item-type" id="mount" [value]="itemType.Mount" checked [ngModel]="itemTypeSelected"
+             (ngModelChange)="changeItemType($event)">
+      <label class="form-check-label" for="mount">
+        Mounts
+      </label>
+    </div>
+    <div class="form-check col-auto">
+      <input type="radio" name="item-type" id="minion" [value]="itemType.Minion" [ngModel]="itemTypeSelected"
+             (ngModelChange)="changeItemType($event)">
+      <label class="form-check-label" for="minion">
+        Minions
+      </label>
+    </div>
+  </div>
+  <app-pack-selector *ngIf="itemTypeSelected == itemType.Mount" (packSelected)="packSelected = $event"
+                     [packs]="packs"></app-pack-selector>
 </div>
+
 
 <div *ngIf="totalPlayers > 0 && totalPlayers != playersLoaded" class="col-sm-4">
   <div class="ml-1 mb-2">
-    <span>Loading mounts</span>
+    <span>Loading mounts and minions...</span>
     <progressbar [max]="totalPlayers" [value]="playersLoaded" type="primary" [striped]="true"
                  [animate]="true">{{playersLoaded}} / {{totalPlayers}}</progressbar>
   </div>
 </div>
 <div class="col-12" *ngFor="let player  of players$ | async" id="member-list">
-  <ng-container *ngIf="player.mounts && player.mounts | async as mounts">
-    <ng-container *ngIf="(player | searchPlayers : searchInput) || ((mounts | searchMounts: searchInput).length > 0)">
-      <div class="player-name">{{player.name}}</div>
-      <div class="row" *ngIf="!packSelected">
-        <ng-container
-             *ngFor="let mount of ((player | searchPlayers : searchInput)? mounts : mounts | searchMounts: searchInput)">
-          <app-item-icon [mount]="mount"></app-item-icon>
-        </ng-container>
-      </div>
-      <div class="row" *ngIf="packSelected">
-        <ng-container *ngFor="let mount$ of packSelected.mounts$">
-          <ng-container
-            *ngIf="((player | searchPlayers : searchInput) || ([mount$|async]|searchMounts: searchInput).length > 0) && mount$ | async as mount; else itemLoader">
-            <app-item-icon [mount]="mount" [mountAvailable]="mount| hasMount: mounts"></app-item-icon>
-          </ng-container>
-        </ng-container>
-      </div>
-      <br>
+  <ng-container *ngIf="player.extraInformation$ && player.extraInformation$ | async as extraInformation">
+    <div class="player-name"
+         *ngIf="(player | searchPlayers : searchInput) || (!this.packSelected && !getPlayerSearch(player.id).emptyItems) || (this.packSelected && !getPlayerSearch(player.id).emptyPack)">{{player.name}}</div>
+    <ng-container *ngIf="!packSelected">
+      <app-item-list *ngIf="itemTypeSelected == itemType.Mount" [items]="extraInformation.mounts"
+                     [shouldFilter]="!(player | searchPlayers : searchInput)" [searchInput]="searchInput"
+                     (isEmpty)="setEmptyItems($event, player.id)"></app-item-list>
+      <app-item-list *ngIf="itemTypeSelected == itemType.Minion" [items]="extraInformation.minions"
+                     [shouldFilter]="!(player | searchPlayers : searchInput)" [searchInput]="searchInput"
+                     (isEmpty)="setEmptyItems($event, player.id)"></app-item-list>
+    </ng-container>
+    <ng-container *ngIf="packSelected">
+      <app-pack-list *ngIf="itemTypeSelected == itemType.Mount" [packSelected]="packSelected"
+                     [items]="extraInformation.mounts"
+                     [playerNameMatched]="player | searchPlayers : searchInput"
+                     [searchInput]="searchInput"
+                     (isEmpty)="setEmptyPack($event, player.id)"></app-pack-list>
     </ng-container>
   </ng-container>
 </div>
@@ -38,12 +55,6 @@
 <div class="player-loader" *ngIf="totalPlayers > 0 && totalPlayers != playersLoaded">
   <ngx-spinner size="medium" [fullScreen]="false" color="#000000" bdColor="#ffffff" type="ball-fall"></ngx-spinner>
 </div>
-<ng-template #itemLoader>
-  <div class="item-loader col-auto">
-    <ngx-spinner size="small" [fullScreen]="false" color="#000000" bdColor="#ffffff"
-                 type="ball-fall"></ngx-spinner>
-  </div>
-</ng-template>
 
 <ng-container *ngIf="totalPlayers == 0">
   <ngx-spinner [fullScreen]="true" type="ball-spin-clockwise"></ngx-spinner>

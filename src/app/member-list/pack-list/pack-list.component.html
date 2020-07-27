@@ -1,0 +1,16 @@
+<div class="row">
+  <ng-container *ngFor="let mount$ of packSelected.mounts$">
+    <ng-container
+      *ngIf="(playerNameMatched || itemsFiltered.length > 0)">
+      <ng-container *ngIf="mount$ | async as item">
+        <app-item-icon [item]="item" [mountAvailable]="item| hasItem: items"></app-item-icon>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  <div *ngIf="!loaded" class="item-loader col-auto">
+    <ngx-spinner size="small" [fullScreen]="false" color="#000000" bdColor="#ffffff"
+                 type="ball-spin-clockwise"></ngx-spinner>
+  </div>
+</div>
+
+

@@ -1,13 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Mount} from '../models/mount';
+import {Item} from '../models/item';
 import {Player} from '../models/player';
 
 @Pipe({
-  name: 'hasMount'
+  name: 'hasItem'
 })
-export class HasMountPipe implements PipeTransform {
+export class HasItemPipe implements PipeTransform {
 
-  transform(value: Mount, playerMounts: Mount[]): boolean {
+  transform(value: Item, playerMounts: Item[]): boolean {
     return playerMounts.some(mount => mount.name.toLowerCase() === value.name.toLowerCase());
   }
 
