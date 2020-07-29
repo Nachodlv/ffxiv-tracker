@@ -56,6 +56,6 @@
   <ngx-spinner size="medium" [fullScreen]="false" color="#000000" bdColor="#ffffff" type="ball-fall"></ngx-spinner>
 </div>
 
-<ng-container *ngIf="totalPlayers == 0">
+<ng-container *ngIf="totalPlayers == 0 || !(players$ | async)">
   <ngx-spinner [fullScreen]="true" type="ball-spin-clockwise"></ngx-spinner>
 </ng-container>

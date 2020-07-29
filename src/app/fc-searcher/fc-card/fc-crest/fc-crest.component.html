@@ -1,0 +1,4 @@
+<div class="crest-container">
+<img *ngFor="let image of crest; let i = index" [src]="image" alt="Crest" class="crest-image"
+     [ngStyle]="{'z-index': i}">
+</div>

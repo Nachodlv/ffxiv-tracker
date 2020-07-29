@@ -1,0 +1,25 @@
+<div id="fc-seacher">
+  <div>
+    <form (submit)="search()">
+      <label for="search-input">Search your Free Company!</label>
+      <div class="row">
+        <input id="search-input" class="col-6" type="text" value=""
+               placeholder="Free Company Name" [(ngModel)]="searchInput" name="searchInput">
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+      <alert *ngIf="formError" type="danger" [dismissible]="true" (onClosed)="formError = ''">{{formError}}</alert>
+    </form>
+  </div>
+  <div class="row container" *ngIf="paginationResult$ | async as paginationResult">
+    <div class="row col-12" id="fc-cards-container">
+      <app-fc-card class="col-md-4 col-sm-6 mb-3" *ngFor="let freeCompany of paginationResult.results"
+                   [freeCompany]="freeCompany"></app-fc-card>
+    </div>
+    <div class="col-xs-12 col-12">
+      <pagination [totalItems]="paginationResult.pagination.resultsTotal"
+                  [itemsPerPage]="paginationResult.pagination.resultsPerPage"
+                  [ngModel]="paginationResult.pagination.page"
+                  (pageChanged)="pageChanged($event)"></pagination>
+    </div>
+  </div>
+</div>

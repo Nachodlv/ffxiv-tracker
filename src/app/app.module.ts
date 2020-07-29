@@ -10,12 +10,17 @@ import {PackSelectorComponent} from './member-list/pack-selector/pack-selector.c
 import {SearchPlayersPipe} from './pipes/search-players.pipe';
 import {ProgressbarModule} from 'ngx-bootstrap/progressbar';
 import {NgxSpinnerModule} from 'ngx-spinner';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ItemIconComponent } from './member-list/item-icon/item-icon.component';
-import { ItemListComponent } from './member-list/item-list/item-list.component';
-import { PackListComponent } from './member-list/pack-list/pack-list.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ItemIconComponent} from './member-list/item-icon/item-icon.component';
+import {ItemListComponent} from './member-list/item-list/item-list.component';
+import {PackListComponent} from './member-list/pack-list/pack-list.component';
 import {SearchItemsPipe} from './pipes/search-items.pipe';
 import {HasItemPipe} from './pipes/has-item.pipe';
+import {FcSearcherComponent} from './fc-searcher/fc-searcher.component';
+import {AlertModule} from 'ngx-bootstrap/alert';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
+import { FcCardComponent } from './fc-searcher/fc-card/fc-card.component';
+import { FcCrestComponent } from './fc-searcher/fc-card/fc-crest/fc-crest.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +33,9 @@ import {HasItemPipe} from './pipes/has-item.pipe';
     ItemIconComponent,
     ItemListComponent,
     PackListComponent,
+    FcSearcherComponent,
+    FcCardComponent,
+    FcCrestComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,9 +43,11 @@ import {HasItemPipe} from './pipes/has-item.pipe';
     HttpClientModule,
     TooltipModule.forRoot(),
     ProgressbarModule.forRoot(),
+    AlertModule.forRoot(),
+    PaginationModule.forRoot(),
     FormsModule,
     NgxSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

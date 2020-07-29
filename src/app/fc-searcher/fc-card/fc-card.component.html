@@ -1,0 +1,13 @@
+<div class="card card-shadow h-100 w-100 clickable" (click)="cardClicked()">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <app-fc-crest class="card-img" [crest]="freeCompany.crest"></app-fc-crest>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{freeCompany.name}}</h5>
+        <p class="card-text">{{freeCompany.server}}</p>
+      </div>
+    </div>
+  </div>
+</div>

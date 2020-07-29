@@ -1,20 +1,23 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {FreeCompanyService} from '../services/free-company-service/free-company.service';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Player} from '../models/player';
-import {tap} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {CharacterService} from '../services/character-service/character.service';
 import {MountPack, Packs} from '../models/mount-pack';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {ItemType} from '../models/item';
+import {FreeCompany} from '../models/free-company';
+import {ActivatedRoute, ParamMap, Params, Router} from '@angular/router';
 
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
   styleUrls: ['./member-list.component.scss']
 })
-export class MemberListComponent implements OnInit {
+export class MemberListComponent implements OnInit, OnDestroy {
 
+  freeCompany: Observable<FreeCompany>;
   players$: Observable<Player[]>;
   packSelected: MountPack | undefined;
   itemTypeSelected: ItemType = ItemType.Mount;
@@ -26,23 +29,34 @@ export class MemberListComponent implements OnInit {
 
   private playersInitialized = 0;
   private playerSearch = new Map<string, PlayerSearch>();
+  private paramsSubscription: Subscription;
 
   constructor(private freeCompanyService: FreeCompanyService,
               private characterService: CharacterService,
               private spinner: NgxSpinnerService,
-              private changeDetector: ChangeDetectorRef) {
+              private changeDetector: ChangeDetectorRef,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
     this.packs = Packs;
   }
 
   ngOnInit(): void {
     this.spinner.show();
-    this.freeCompanyService.getCompanyMembers();
-    this.players$ = this.freeCompanyService.members$.pipe(tap((players: Player[]) => {
-        players.forEach(player => this.playerSearch.set(player.id, new PlayerSearch()));
-        this.totalPlayers = players.length;
-        this.initializePlayers(players);
+
+    this.paramsSubscription = this.activatedRoute.paramMap.subscribe(params => {
+      const fcId = params.get('id');
+      if (!fcId) {
+        this.router.navigate([]);
       }
-    ));
+
+      this.freeCompany = this.freeCompanyService.getFreeCompanyById(fcId);
+      this.players$ = this.freeCompanyService.getCompanyMembers(fcId).pipe(tap((players: Player[]) => {
+          players.forEach(player => this.playerSearch.set(player.id, new PlayerSearch()));
+          this.totalPlayers = players.length;
+          this.initializePlayers(players);
+        }
+      ));
+    });
   }
 
   changeItemType(itemType: ItemType): void {
@@ -76,6 +90,10 @@ export class MemberListComponent implements OnInit {
       }));
     }
     this.playersInitialized += playersToInitialize;
+  }
+
+  ngOnDestroy(): void {
+    this.paramsSubscription.unsubscribe();
   }
 
 }
