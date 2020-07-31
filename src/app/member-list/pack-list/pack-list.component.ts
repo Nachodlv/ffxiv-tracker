@@ -37,17 +37,40 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const change = changes.searchInput;
-    if (this.playerNameMatched || !change || change.previousValue === change.currentValue) {
-      return;
+    const searchInput = changes.searchInput;
+    const packSelected = changes.packSelected;
+    if (packSelected && packSelected.previousValue !== packSelected.currentValue) {
+      this.packSelectedChange(packSelected.currentValue);
     }
-
-    this.itemsFiltered = this.searchItemsPipe.transform(this.packItems, change.currentValue);
-    this.isEmpty.emit(this.itemsFiltered.length === 0);
+    if (searchInput && searchInput.previousValue !== searchInput.currentValue) {
+      this.searchInputChanged(searchInput.currentValue);
+    }
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  private searchInputChanged(newSearchInput: string): void {
+    if (this.playerNameMatched) {
+      return;
+    }
+    this.itemsFiltered = this.searchItemsPipe.transform(this.packItems, newSearchInput);
+    this.isEmpty.emit(this.itemsFiltered.length === 0);
+  }
+
+  private packSelectedChange(newPack: MountPack): void {
+    this.loaded = false;
+    this.packItems = [];
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    this.subscription = forkJoin(newPack.mounts$).subscribe(items => {
+      this.packItems = items;
+      this.loaded = true;
+      this.searchInputChanged(this.searchInput);
+    });
   }
 
 }

@@ -30,10 +30,6 @@ export class FcSearcherComponent implements OnInit {
   }
 
   search(): void {
-    if (this.searchInput.length <= 3) {
-      this.formError = 'Please write at least four letters';
-      return;
-    }
     this.searchSubmit = this.searchInput;
     this.formError = '';
     this.currentPage = 1;
