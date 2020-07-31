@@ -1,2 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
+
+@font-face {
+  font-family: Alegreya;
+  src: url(assets/fonts/alegreya/Alegreya-Regular.ttf) format("opentype");
+
+}
+
+* {
+  font-family: Alegreya
+}
