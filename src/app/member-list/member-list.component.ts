@@ -30,6 +30,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   private playersInitialized = 0;
   private playerSearch = new Map<string, PlayerSearch>();
   private paramsSubscription: Subscription;
+  private playerSubscriptions: Subscription[] = [];
 
   constructor(private freeCompanyService: FreeCompanyService,
               private characterService: CharacterService,
@@ -82,18 +83,24 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   private initializePlayers(players: Player[]): void {
-    const playersToInitialize = 4;
-    for (let i = this.playersInitialized; i < this.playersInitialized + playersToInitialize && i < players.length; i++) {
-      players[i].extraInformation$ = this.characterService.getPlayerExtraInformation(players[i].id).pipe(tap(mounts => {
-        this.playersLoaded++;
-        this.initializePlayers(players);
-      }));
-    }
+    const playersToInitialize = 5;
+    const currentInitialized = this.playersInitialized;
     this.playersInitialized += playersToInitialize;
+    for (let i = currentInitialized; i < Math.min(currentInitialized + playersToInitialize, players.length); i++) {
+      players[i].extraInformation$ = this.characterService.getPlayerExtraInformation(players[i].id);
+      this.playerSubscriptions.push(players[i].extraInformation$.subscribe(() => {
+          this.playersLoaded++;
+          if (this.playersInitialized < players.length) {
+            this.initializePlayers(players);
+          }
+        }, error => console.log(`Error loading player info. ${error}`)
+      ));
+    }
   }
 
   ngOnDestroy(): void {
     this.paramsSubscription.unsubscribe();
+    this.playerSubscriptions.forEach(s => s.unsubscribe());
   }
 
 }

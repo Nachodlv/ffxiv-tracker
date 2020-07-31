@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {FfxivHttpClientService} from '../ffxiv-http-client/ffxiv-http-client.service';
-import {Observable, of, ReplaySubject} from 'rxjs';
-import {Item} from '../../models/item';
+import {Observable, ReplaySubject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {PlayerExtraInformation} from '../../models/player-extra-information';
 
@@ -30,14 +29,18 @@ export class CharacterService {
     }
     if (this.playerMounts.has(playerId)) {
       this.playerMountsSubject.get(playerId).next(this.playerMounts.get(playerId));
+      this.playerMountsSubject.get(playerId).complete();
     } else {
-      this.requestPlayerExtraInformation(playerId).subscribe(value => this.playerMountsSubject.get(playerId).next(value));
+      this.requestPlayerExtraInformation(playerId).subscribe(value => {
+        this.playerMountsSubject.get(playerId).next(value);
+        this.playerMountsSubject.get(playerId).complete();
+      });
     }
   }
 
   private requestPlayerExtraInformation(playerId: string): Observable<PlayerExtraInformation> {
     return this.ffxivHttpClientService.get(`${this.url}/${playerId}${this.mountUrl}`).pipe(map(response => {
-        return PlayerExtraInformation.fromJson(response);
+      return PlayerExtraInformation.fromJson(response);
       }
     ));
   }
