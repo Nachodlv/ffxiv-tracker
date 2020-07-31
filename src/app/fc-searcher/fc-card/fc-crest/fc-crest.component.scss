@@ -1,7 +1,10 @@
 .crest-container {
   position: relative;
-  width: 64px;
+  width: 100%;
   height: 64px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 
   .crest-image {
     position: absolute;

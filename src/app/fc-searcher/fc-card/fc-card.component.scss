@@ -7,3 +7,12 @@
 .clickable {
   cursor: pointer;
 }
+
+.clickable:hover {
+  background-color: #dcdcdc;
+}
+
+.card-content {
+  align-items: center;
+  height: 100%;
+}

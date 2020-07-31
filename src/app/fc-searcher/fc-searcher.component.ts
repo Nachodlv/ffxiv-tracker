@@ -4,6 +4,8 @@ import {PageChangedEvent} from 'ngx-bootstrap/pagination';
 import {PaginationResult} from '../models/pagination-result';
 import {Observable} from 'rxjs';
 import {FreeCompany} from '../models/free-company';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-fc-searcher',
@@ -16,13 +18,15 @@ export class FcSearcherComponent implements OnInit {
   formError = '';
   currentPage = 1;
   paginationResult$: Observable<PaginationResult<FreeCompany>> | undefined;
+  loading = false;
 
-  searchSubmit = this.searchInput;
+  private searchSubmit = this.searchInput;
 
-  constructor(private freeCompanyService: FreeCompanyService) {
+  constructor(private freeCompanyService: FreeCompanyService, private spinner: NgxSpinnerService) {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
   }
 
   search(): void {
@@ -45,7 +49,11 @@ export class FcSearcherComponent implements OnInit {
   }
 
   private requestPage(): void {
-    this.paginationResult$ = this.freeCompanyService.searchFreeCompanyByName(this.searchInput, this.currentPage);
+    this.loading = true;
+    this.paginationResult$ =
+      this.freeCompanyService.searchFreeCompanyByName(this.searchInput, this.currentPage).pipe(tap(fc => {
+        this.loading = false;
+      }, error => this.formError = error));
   }
 
 }

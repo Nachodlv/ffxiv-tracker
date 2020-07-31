@@ -1,13 +1,40 @@
 #fc-seacher {
-  padding: 20px;
 
+  padding: 30px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
 
-  #fc-cards-container {
-    padding: 10px;
+  form {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+
+    label {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    #search-input-label {
+      text-align: center;
+    }
   }
 
-  .pagination {
+  #fc-cards-container {
+    padding-top: 25px;
+    padding-bottom: 10px;
+  }
+
+  #pagination-container {
     justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .loader-container {
+    height: 100px;
+    width: 100px;
+    position: relative;
   }
 
 }
