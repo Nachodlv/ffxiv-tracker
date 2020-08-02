@@ -41,14 +41,12 @@ export class FreeCompanyService {
   }
 
   private requestCompanyMember(id: string): Observable<Player[]> {
-    console.log('requesting member');
     return this.ffxivHttpClient.get(`${this.url}/${id}?${this.membersUrl}`).pipe(map((response: any) => {
       return response.FreeCompanyMembers.map(member => Player.fromJson(member));
     }));
   }
 
   private requestFreeCompanyById(id: string): Observable<FreeCompany> {
-    console.log('requesting');
     return this.ffxivHttpClient.get(`${this.url}/${id}`).pipe(map(response => {
       return FreeCompany.fromJson(response);
     }));

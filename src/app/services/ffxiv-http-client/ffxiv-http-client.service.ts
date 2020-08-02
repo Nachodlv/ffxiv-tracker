@@ -35,7 +35,7 @@ export class FfxivHttpClientService {
   private executeFunctionWithDelay(callback: () => Observable<any>): Observable<any> {
     this.currentRequests++;
     const now = new Date().getTime();
-    const timeout = this.currentRequests === 0 ? 0 : now - this.lastRequest + this.currentRequests * this.timeBetweenRequests;
+    const timeout = this.currentRequests <= 0 ? 0 : now - this.lastRequest + this.currentRequests * this.timeBetweenRequests;
     this.lastRequest = now;
     return of(undefined).pipe(delay(timeout), switchMap(value => {
         this.currentRequests--;
