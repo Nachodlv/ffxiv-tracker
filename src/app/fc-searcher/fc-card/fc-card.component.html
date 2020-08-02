@@ -1,4 +1,4 @@
-<div class="card card-shadow h-100 w-100 clickable" (click)="cardClicked()">
+<div class="card card-shadow h-100 w-100 clickable" [routerLink]="'/fc/' + freeCompany.id" >
   <div class="row no-gutters card-content">
     <div class="col-md-4 pt-3 pt-sm-0 ">
       <app-fc-crest class="card-img" [crest]="freeCompany.crest"></app-fc-crest>

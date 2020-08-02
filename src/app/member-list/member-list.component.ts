@@ -82,16 +82,16 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   private initializePlayers(players: Player[]): void {
-    const playersToInitialize = 5;
+    const playersToInitialize = 4;
     const currentInitialized = this.playersInitialized;
     this.playersInitialized += playersToInitialize;
     for (let i = currentInitialized; i < Math.min(currentInitialized + playersToInitialize, players.length); i++) {
       players[i].extraInformation$ = this.characterService.getPlayerExtraInformation(players[i].id);
-      this.playerSubscriptions.push(players[i].extraInformation$.subscribe(() => {
+      this.playerSubscriptions.push(players[i].extraInformation$.subscribe((info) => {
           this.playersLoaded++;
+          this.changeDetector.markForCheck();
           if (this.playersInitialized < players.length) {
             this.initializePlayers(players);
-            this.changeDetector.detectChanges();
           }
         }, error => console.log(`Error loading player info. ${error}`)
       ));
@@ -99,7 +99,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.paramsSubscription.unsubscribe();
+    this.paramsSubscription?.unsubscribe();
     this.playerSubscriptions.forEach(s => s.unsubscribe());
   }
 

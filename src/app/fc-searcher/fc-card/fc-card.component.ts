@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FreeCompany} from '../../models/free-company';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-fc-card',
@@ -11,13 +10,10 @@ export class FcCardComponent implements OnInit {
 
   @Input() freeCompany: FreeCompany;
 
-  constructor(private router: Router) {
+  constructor() {
   }
 
   ngOnInit(): void {
   }
 
-  cardClicked(): void {
-    this.router.navigate(['fc', this.freeCompany.id]);
-  }
 }
