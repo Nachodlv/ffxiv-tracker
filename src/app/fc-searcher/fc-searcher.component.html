@@ -5,7 +5,7 @@
       <div class="row ml-0">
         <input id="search-input" class="col-8" type="text" value=""
                placeholder="Free Company Name" [(ngModel)]="searchInput" name="searchInput">
-        <button type="submit" class="btn btn-primary ml-3 col-auto">Search</button>
+        <button type="submit" class="btn btn-primary ml-3 col-auto" [disabled]="!searchInput">Search</button>
       </div>
       <alert *ngIf="formError" type="danger" [dismissible]="true" (onClosed)="formError = ''">{{formError}}</alert>
     </form>
