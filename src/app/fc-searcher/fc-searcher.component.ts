@@ -57,6 +57,7 @@ export class FcSearcherComponent implements OnInit, OnDestroy {
     this.paginationResult$ =
       this.freeCompanyService.searchFreeCompanyByName(this.searchInput, this.currentPage);
     this.subscription = this.paginationResult$.subscribe(fc => {
+      console.log(fc);
       this.loading = false;
     }, error => this.formError = error);
     this.changeDetector.detectChanges();

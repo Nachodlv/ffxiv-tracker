@@ -6,6 +6,7 @@ import {FfxivHttpClientService} from '../ffxiv-http-client/ffxiv-http-client.ser
 import {PaginationResult} from '../../models/pagination-result';
 import {FreeCompany} from '../../models/free-company';
 import {PlayerExtraInformation} from '../../models/player-extra-information';
+import {CacheSubject} from '../cacheSubject';
 
 @Injectable({
   providedIn: 'root'
@@ -13,27 +14,19 @@ import {PlayerExtraInformation} from '../../models/player-extra-information';
 export class FreeCompanyService {
 
   private url = 'freecompany';
-  private companyId = '9228157111458935985';
   private membersUrl = 'data=FCM';
-  private freeCompanies = new Map<string, FreeCompany>();
-  private freeCompaniesSubject = new Map<string, ReplaySubject<FreeCompany>>();
+  private freeCompanies = new CacheSubject<FreeCompany, string>();
+  private freeCompaniesByName = new CacheSubject<PaginationResult<FreeCompany>, string>();
 
   constructor(private ffxivHttpClient: FfxivHttpClientService) {
   }
 
   getFreeCompanyById(id: string): Observable<FreeCompany> {
-    if (!this.freeCompaniesSubject.has(id)) {
-      this.fetchFreeCompanyById(id);
-    }
-    return this.freeCompaniesSubject.get(id).asObservable();
+    return this.freeCompanies.getObservable(id, () => this.requestFreeCompanyById(id));
   }
 
   searchFreeCompanyByName(name: string, page: number): Observable<PaginationResult<FreeCompany>> {
-    return this.ffxivHttpClient.get(`${this.url}/search?name=${name}&page=${page}`).pipe(map(response => {
-      const pagination = PaginationResult.fromJson<FreeCompany>(response, new FreeCompany());
-      pagination.results.forEach(fc => this.freeCompanies.set(fc.id, fc));
-      return pagination;
-    }));
+    return this.freeCompaniesByName.getObservable(`${name}/${page}`, () => this.requestFreeCompanyByName(name, page));
   }
 
   getCompanyMembers(id: string): Observable<Player[]> {
@@ -47,27 +40,25 @@ export class FreeCompanyService {
     }));
   }
 
-  requestCompanyMember(id: string): Observable<Player[]> {
+  private requestCompanyMember(id: string): Observable<Player[]> {
+    console.log('requesting member');
     return this.ffxivHttpClient.get(`${this.url}/${id}?${this.membersUrl}`).pipe(map((response: any) => {
       return response.FreeCompanyMembers.map(member => Player.fromJson(member));
     }));
   }
 
-  private fetchFreeCompanyById(id: string): void {
-    if (!this.freeCompaniesSubject.has(id)) {
-      this.freeCompaniesSubject.set(id, new ReplaySubject<FreeCompany>());
-    }
-    if (this.freeCompanies.has(id)) {
-      this.freeCompaniesSubject.get(id).next(this.freeCompanies.get(id));
-    } else {
-      this.requestFreeCompanyById(id).subscribe(fc => this.freeCompaniesSubject.get(id).next(fc));
-    }
-  }
-
   private requestFreeCompanyById(id: string): Observable<FreeCompany> {
+    console.log('requesting');
     return this.ffxivHttpClient.get(`${this.url}/${id}`).pipe(map(response => {
       return FreeCompany.fromJson(response);
     }));
   }
 
+  private requestFreeCompanyByName(name: string, page: number): Observable<PaginationResult<FreeCompany>> {
+    return this.ffxivHttpClient.get(`${this.url}/search?name=${name}&page=${page}`).pipe(map(response => {
+      const pagination = PaginationResult.fromJson<FreeCompany>(response, new FreeCompany());
+      pagination.results.forEach(fc => this.freeCompanies.set(fc.id, fc));
+      return pagination;
+    }));
+  }
 }

@@ -46,7 +46,6 @@ export class PackSelectorComponent implements OnInit {
   private initializePack(pack: PackCheckBox): void {
     const observables: Observable<Item>[] = [];
     pack.mountPack.ids.forEach(mount => {
-      this.itemService.fetchMount(mount);
       observables.push(this.itemService.getMount(mount));
     });
     pack.mountPack.mounts$ = observables;
