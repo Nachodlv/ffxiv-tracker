@@ -11,17 +11,22 @@
     </form>
   </div>
 
-  <div class="row container" *ngIf="paginationResult$ | async as paginationResult;">
-      <div class="row" id="fc-cards-container">
-        <app-fc-card class="col-md-4 col-sm-6 mb-3" *ngFor="let freeCompany of paginationResult.results"
-                     [freeCompany]="freeCompany"></app-fc-card>
-      </div>
+  <div id="results-container" class="row container" *ngIf="paginationResult$ | async as paginationResult;">
+    <div class="row" id="fc-cards-container">
+      <app-fc-card class="col-md-4 col-sm-6 mb-3" *ngFor="let freeCompany of paginationResult.results"
+                   [freeCompany]="freeCompany"></app-fc-card>
+    </div>
+    <alert class="pt-5" *ngIf="paginationResult.results.length == 0; else pagination" type="warning">
+      No free companies were found
+    </alert>
+    <ng-template #pagination>
       <div class="col-xs-12 col-12" id="pagination-container">
         <pagination [totalItems]="paginationResult.pagination.resultsTotal"
                     [itemsPerPage]="paginationResult.pagination.resultsPerPage"
                     [ngModel]="paginationResult.pagination.page"
                     (pageChanged)="pageChanged($event)"></pagination>
       </div>
+    </ng-template>
   </div>
   <div *ngIf="loading" class="loader-container">
     <ngx-spinner size="medium" [fullScreen]="false" color="#000000" bdColor="#ffffff" type="ball-fall">

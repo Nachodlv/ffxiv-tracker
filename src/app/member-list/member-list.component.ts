@@ -49,7 +49,6 @@ export class MemberListComponent implements OnInit, OnDestroy {
       if (!fcId) {
         this.router.navigate([]);
       }
-
       this.freeCompany = this.freeCompanyService.getFreeCompanyById(fcId);
       this.players$ = this.freeCompanyService.getCompanyMembers(fcId).pipe(tap((players: Player[]) => {
           players.forEach(player => this.playerSearch.set(player.id, new PlayerSearch()));
@@ -92,6 +91,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
           this.playersLoaded++;
           if (this.playersInitialized < players.length) {
             this.initializePlayers(players);
+            this.changeDetector.detectChanges();
           }
         }, error => console.log(`Error loading player info. ${error}`)
       ));

@@ -20,15 +20,20 @@
     }
   }
 
-  #fc-cards-container {
-    padding-top: 25px;
-    padding-bottom: 10px;
-  }
-
-  #pagination-container {
-    justify-content: center;
-    align-items: center;
+  #results-container {
     display: flex;
+    justify-content: center;
+
+    #fc-cards-container {
+      padding-top: 25px;
+      padding-bottom: 10px;
+    }
+
+    #pagination-container {
+      justify-content: center;
+      align-items: center;
+      display: flex;
+    }
   }
 
   .loader-container {
@@ -36,5 +41,4 @@
     width: 100px;
     position: relative;
   }
-
 }
