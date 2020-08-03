@@ -7,8 +7,8 @@ import {Player} from '../models/player';
 })
 export class HasItemPipe implements PipeTransform {
 
-  transform(value: Item, playerMounts: Item[]): boolean {
-    return playerMounts.some(mount => mount.name.toLowerCase() === value.name.toLowerCase());
+  transform(value: Item, items: Item[]): boolean {
+    return items.some(item => item.name.toLowerCase() === value.name.toLowerCase());
   }
 
 }

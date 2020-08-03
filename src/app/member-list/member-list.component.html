@@ -18,8 +18,8 @@
       </label>
     </div>
   </div>
-  <app-pack-selector *ngIf="itemTypeSelected == itemType.Mount" (packSelected)="packSelected = $event"
-                     [packs]="packs"></app-pack-selector>
+  <app-pack-selector (packSelected)="packSelected = $event"
+                     [packs]="itemTypeSelected == itemType.Mount ? mountsPacks: minionsPacks"></app-pack-selector>
 </div>
 
 
@@ -43,8 +43,8 @@
                      (isEmpty)="setEmptyItems($event, player.id)"></app-item-list>
     </ng-container>
     <ng-container *ngIf="packSelected">
-      <app-pack-list *ngIf="itemTypeSelected == itemType.Mount" [packSelected]="packSelected"
-                     [items]="extraInformation.mounts"
+      <app-pack-list [packSelected]="packSelected"
+                     [items]="itemTypeSelected == itemType.Mount ? extraInformation.mounts : extraInformation.minions"
                      [playerNameMatched]="player | searchPlayers : searchInput"
                      [searchInput]="searchInput"
                      (isEmpty)="setEmptyPack($event, player.id)"></app-pack-list>

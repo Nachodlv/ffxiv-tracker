@@ -4,11 +4,13 @@ import {Observable, Subscription} from 'rxjs';
 import {Player} from '../models/player';
 import {map, tap} from 'rxjs/operators';
 import {CharacterService} from '../services/character-service/character.service';
-import {MountPack, Packs} from '../models/mount-pack';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {ItemType} from '../models/item';
 import {FreeCompany} from '../models/free-company';
 import {ActivatedRoute, ParamMap, Params, Router} from '@angular/router';
+import {MountPacks} from '../models/packs/mount-packs';
+import {ItemPack} from '../models/packs/item-pack';
+import {MinionPacks} from '../models/packs/minion-packs';
 
 @Component({
   selector: 'app-member-list',
@@ -19,11 +21,12 @@ export class MemberListComponent implements OnInit, OnDestroy {
 
   freeCompany: Observable<FreeCompany>;
   players$: Observable<Player[]>;
-  packSelected: MountPack | undefined;
+  packSelected: ItemPack | undefined;
   itemTypeSelected: ItemType = ItemType.Mount;
   itemType = ItemType;
   searchInput = '';
-  packs: MountPack[] = [];
+  mountsPacks: ItemPack[] = [];
+  minionsPacks: ItemPack[] = [];
   totalPlayers = 0;
   playersLoaded = 0;
 
@@ -38,7 +41,8 @@ export class MemberListComponent implements OnInit, OnDestroy {
               private changeDetector: ChangeDetectorRef,
               private activatedRoute: ActivatedRoute,
               private router: Router) {
-    this.packs = Packs;
+    this.mountsPacks = MountPacks;
+    this.minionsPacks = MinionPacks;
   }
 
   ngOnInit(): void {

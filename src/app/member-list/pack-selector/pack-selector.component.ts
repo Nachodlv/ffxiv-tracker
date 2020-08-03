@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MountPack, Packs} from '../../models/mount-pack';
 import {Observable} from 'rxjs';
-import {Item} from '../../models/item';
+import {Item, ItemType} from '../../models/item';
 import {ItemService} from '../../services/item-service/item.service';
+import {ItemPack} from '../../models/packs/item-pack';
 
 @Component({
   selector: 'app-pack-selector',
@@ -12,9 +12,9 @@ import {ItemService} from '../../services/item-service/item.service';
 export class PackSelectorComponent implements OnInit {
   packs: PackCheckBox[] = [];
 
-  @Output() packSelected = new EventEmitter<MountPack>();
+  @Output() packSelected = new EventEmitter<ItemPack>();
 
-  @Input('packs') set setPacks(packs: MountPack[]) {
+  @Input('packs') set setPacks(packs: ItemPack[]) {
     this.packs = packs.map(pack => new PackCheckBox(pack));
   }
 
@@ -37,7 +37,7 @@ export class PackSelectorComponent implements OnInit {
       if (!packSelected.initialized) {
         this.initializePack(packSelected);
       }
-      this.packSelected.emit(packSelected.mountPack);
+      this.packSelected.emit(packSelected.itemPack);
     } else {
       this.packSelected.emit(undefined);
     }
@@ -45,15 +45,17 @@ export class PackSelectorComponent implements OnInit {
 
   private initializePack(pack: PackCheckBox): void {
     const observables: Observable<Item>[] = [];
-    pack.mountPack.ids.forEach(mount => {
-      observables.push(this.itemService.getMount(mount));
+    pack.itemPack.ids.forEach(item => {
+      observables.push(pack.itemPack.type === ItemType.Mount ?
+        this.itemService.getMount(item) :
+        this.itemService.getMinion(item));
     });
-    pack.mountPack.mounts$ = observables;
+    pack.itemPack.items$ = observables;
     pack.initialized = true;
   }
 }
 
 class PackCheckBox {
-  constructor(public mountPack: MountPack, public selected: boolean = false, public initialized: boolean = false) {
+  constructor(public itemPack: ItemPack, public selected: boolean = false, public initialized: boolean = false) {
   }
 }

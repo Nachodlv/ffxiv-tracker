@@ -11,18 +11,24 @@ import {CacheSubject} from '../cacheSubject';
 export class ItemService {
 
   private mountUrl = 'Mount/';
+  private minionUrl = 'Companion/';
 
   private mounts = new CacheSubject<Item, string>();
+  private minions = new CacheSubject<Item, string>();
 
   constructor(private ffxivHttpClientService: FfxivHttpClientService) {
   }
 
   getMount(id: string): Observable<Item> {
-    return this.mounts.getObservable(id, () => this.makeFetchMountRequest(id));
+    return this.mounts.getObservable(id, () => this.makeFetchItemRequest(id, this.mountUrl));
   }
 
-  private makeFetchMountRequest(id: string): Observable<Item> {
-    return this.ffxivHttpClientService.get(`${this.mountUrl}${id}`).pipe(map(value => Item.fromJson(value)));
+  getMinion(id: string): Observable<Item> {
+    return this.minions.getObservable(id, () => this.makeFetchItemRequest(id, this.minionUrl));
+  }
+
+  private makeFetchItemRequest(id: string, url: string): Observable<Item> {
+    return this.ffxivHttpClientService.get(`${url}${id}`).pipe(map(value => Item.fromJson(value)));
   }
 
 }

@@ -1,9 +1,8 @@
 import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
-import {MountPack} from '../../models/mount-pack';
 import {Item} from '../../models/item';
 import {SearchItemsPipe} from '../../pipes/search-items.pipe';
 import {forkJoin, Subscription} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {ItemPack} from '../../models/packs/item-pack';
 
 @Component({
   selector: 'app-pack-list',
@@ -13,7 +12,7 @@ import {tap} from 'rxjs/operators';
 })
 export class PackListComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() packSelected: MountPack;
+  @Input() packSelected: ItemPack;
   @Input() playerNameMatched = false;
   @Input() items: Item[] = [];
   @Input() searchInput: string;
@@ -30,7 +29,7 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = forkJoin(this.packSelected.mounts$).subscribe(items => {
+    this.subscription = forkJoin(this.packSelected.items$).subscribe(items => {
       this.packItems = items;
       this.loaded = true;
     });
@@ -59,14 +58,14 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
     this.isEmpty.emit(this.itemsFiltered.length === 0);
   }
 
-  private packSelectedChange(newPack: MountPack): void {
+  private packSelectedChange(newPack: ItemPack): void {
     this.loaded = false;
     this.packItems = [];
 
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-    this.subscription = forkJoin(newPack.mounts$).subscribe(items => {
+    this.subscription = forkJoin(newPack.items$).subscribe(items => {
       this.packItems = items;
       this.loaded = true;
       this.searchInputChanged(this.searchInput);
