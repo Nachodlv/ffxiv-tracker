@@ -1,0 +1,20 @@
+footer {
+  justify-content: center;
+  align-items: center;
+  background-color: #e0e0e0;
+
+  h6 {
+    margin: 5px 10px;
+    text-align: center;
+
+    #api {
+      font-weight: bold;
+    }
+  }
+
+  img {
+    height: 20px;
+    padding-left: 8px;
+    padding-bottom: 2px;
+  }
+}

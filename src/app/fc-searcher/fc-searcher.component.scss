@@ -5,6 +5,11 @@
   flex-flow: column;
   align-items: center;
 
+  #title {
+    text-align: center;
+    padding-top: 10px;
+  }
+
   form {
     display: flex;
     flex-flow: column;

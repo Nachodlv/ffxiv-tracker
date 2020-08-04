@@ -1,8 +1,9 @@
+<h4 class="ml-4 mt-2">FFXIV Tracker</h4>
 <button type="button" class="btn btn-primary btn-sm ml-4 mt-2" [routerLink]="'/'">Search another FC</button>
 <div id="settings-container">
   <input id="search-input" [(ngModel)]="searchInput" class="col-sm-6" type="text" value=""
          placeholder="Search by Name or Mount...">
-  <div class="row" id="item-type">
+  <div class="row m-0" id="item-type">
     <div class="form-check col-auto" id="mount-type">
       <input type="radio" name="item-type" id="mount" [value]="itemType.Mount" checked [ngModel]="itemTypeSelected"
              (ngModelChange)="changeItemType($event)">

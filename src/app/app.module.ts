@@ -21,6 +21,7 @@ import {AlertModule} from 'ngx-bootstrap/alert';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import { FcCardComponent } from './fc-searcher/fc-card/fc-card.component';
 import { FcCrestComponent } from './fc-searcher/fc-card/fc-crest/fc-crest.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { FcCrestComponent } from './fc-searcher/fc-card/fc-crest/fc-crest.compon
     FcSearcherComponent,
     FcCardComponent,
     FcCrestComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
