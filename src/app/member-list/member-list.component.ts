@@ -19,7 +19,7 @@ import {MinionPacks} from '../models/packs/minion-packs';
 })
 export class MemberListComponent implements OnInit, OnDestroy {
 
-  freeCompany: Observable<FreeCompany>;
+  freeCompany$: Observable<FreeCompany>;
   players$: Observable<Player[]>;
   packSelected: ItemPack | undefined;
   itemTypeSelected: ItemType = ItemType.Mount;
@@ -53,7 +53,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
       if (!fcId) {
         this.router.navigate([]);
       }
-      this.freeCompany = this.freeCompanyService.getFreeCompanyById(fcId);
+      this.freeCompany$ = this.freeCompanyService.getFreeCompanyById(fcId);
       this.players$ = this.freeCompanyService.getCompanyMembers(fcId).pipe(tap((players: Player[]) => {
           players.forEach(player => this.playerSearch.set(player.id, new PlayerSearch()));
           this.totalPlayers = players.length;

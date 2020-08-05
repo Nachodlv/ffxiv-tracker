@@ -1,5 +1,6 @@
 <h4 class="ml-4 mt-2">FFXIV Tracker</h4>
-<button type="button" class="btn btn-primary btn-sm ml-4 mt-2" [routerLink]="'/'">Search another FC</button>
+<h5 id="fc-name" class="ml-4 mt-1" *ngIf="freeCompany$ | async as freeCompany">{{freeCompany.name}}</h5>
+<button type="button" class="btn btn-info btn-sm ml-4 mt-2" [routerLink]="'/'">Search another FC</button>
 <div id="settings-container">
   <input id="search-input" [(ngModel)]="searchInput" class="col-sm-6" type="text" value=""
          placeholder="Search by Name or Mount...">

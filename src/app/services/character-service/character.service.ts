@@ -3,6 +3,7 @@ import {FfxivHttpClientService} from '../ffxiv-http-client/ffxiv-http-client.ser
 import {Observable, ReplaySubject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {PlayerExtraInformation} from '../../models/player-extra-information';
+import {CacheSubject} from "../cacheSubject";
 
 @Injectable({
   providedIn: 'root'
@@ -10,32 +11,13 @@ import {PlayerExtraInformation} from '../../models/player-extra-information';
 export class CharacterService {
   private url = 'character';
   private mountUrl = '?data=MIMO';
-  private playerMounts: Map<string, PlayerExtraInformation> = new Map<string, PlayerExtraInformation>();
-  private playerMountsSubject: Map<string, ReplaySubject<PlayerExtraInformation>> = new Map<string, ReplaySubject<PlayerExtraInformation>>();
+  private playerMounts = new CacheSubject<PlayerExtraInformation, string>();
 
   constructor(private ffxivHttpClientService: FfxivHttpClientService) {
   }
 
   getPlayerExtraInformation(playerId: string): Observable<PlayerExtraInformation> {
-    if (!this.playerMountsSubject.has(playerId)) {
-      this.fetchPlayerExtraInformation(playerId);
-    }
-    return this.playerMountsSubject.get(playerId).asObservable();
-  }
-
-  fetchPlayerExtraInformation(playerId: string): void {
-    if (!this.playerMountsSubject.has(playerId)) {
-      this.playerMountsSubject.set(playerId, new ReplaySubject<PlayerExtraInformation>());
-    }
-    if (this.playerMounts.has(playerId)) {
-      this.playerMountsSubject.get(playerId).next(this.playerMounts.get(playerId));
-      this.playerMountsSubject.get(playerId).complete();
-    } else {
-      this.requestPlayerExtraInformation(playerId).subscribe(value => {
-        this.playerMountsSubject.get(playerId).next(value);
-        this.playerMountsSubject.get(playerId).complete();
-      });
-    }
+    return this.playerMounts.getObservable(playerId, () => this.requestPlayerExtraInformation(playerId));
   }
 
   private requestPlayerExtraInformation(playerId: string): Observable<PlayerExtraInformation> {

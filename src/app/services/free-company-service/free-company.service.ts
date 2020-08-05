@@ -48,7 +48,7 @@ export class FreeCompanyService {
 
   private requestFreeCompanyById(id: string): Observable<FreeCompany> {
     return this.ffxivHttpClient.get(`${this.url}/${id}`).pipe(map(response => {
-      return FreeCompany.fromJson(response);
+      return FreeCompany.fromJson(response.FreeCompany);
     }));
   }
 
