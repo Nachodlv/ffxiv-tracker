@@ -78,5 +78,5 @@ const eurekaMounts = new ItemPack('Eureka', ItemType.Mount, [
 
 
 export const MountPacks: ItemPack [] = [
-  trialPack, raidMounts, questMounts, feastMounts, eurekaMounts
+  trialPack, raidMounts, eurekaMounts, questMounts, feastMounts
 ];

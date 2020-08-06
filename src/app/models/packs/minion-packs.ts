@@ -75,6 +75,50 @@ const questMinions = new ItemPack('Quests', ItemType.Minion, [
   '15', // Chigoe Larva
 ]);
 
+const dungeonMinions = new ItemPack('Dungeons', ItemType.Minion, [
+  '374', // Ancient One
+  '361', // Little Leannan
+  '349', // Shoebill
+  '334', // Chameleon
+  '333', // Black Hayate
+  '352', // Forgiven Hate
+  '347', // Tiny Echevore
+  '339', // Clionid Larva
+  '336', // Armadillo Bowler
+  '321', // Wind-up Weapon
+  '312', // Mudpie
+  '290', // Monkey King
+  '279', // White Whittret
+  '272', // Salt & Pepper Seal
+  '257', // Magitek Avenger F1
+  '252', // Mock-up Grynewaht
+  '249', // Dress-up Yugiri
+  '247', // Road Sparrow
+  '258', // Ghido
+  '254', // Ivon Coeurlfist Doll
+  '245', // Bombfish
+  '226', // Bullpup
+  '216', // Shaggy Shoat
+  '189', // Calamari
+  '180', // Morpho
+  '179', // Brina
+  '178', // Calca
+  '166', // Korpokkur Kid
+  '138', // Ugly Duckling
+  '137', // Owlet
+  '141', // Lesser Panda
+  '134', // Unicolt
+  '139', // Gaelikitten
+  '112', // Mummy's Little Mummy
+  '57', // Tight-beaked Parrot
+  '102', // Naughty Nanka
+  '80', // Baby Opo-opo
+  '47', // Slime Puddle
+  '44', // Demon Brick
+  '42', // Bite-sized Pudding
+  '12', // Morbol Seedling
+]);
+
 export const MinionPacks: ItemPack[] = [
-  trialMinions, raidMinions, eurekaMinions, fateMinions, questMinions
+  trialMinions, raidMinions, eurekaMinions, fateMinions, questMinions, dungeonMinions
 ];
