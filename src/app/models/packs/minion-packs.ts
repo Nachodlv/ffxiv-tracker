@@ -119,6 +119,49 @@ const dungeonMinions = new ItemPack('Dungeons', ItemType.Minion, [
   '12', // Morbol Seedling
 ]);
 
+const deepDungeonMinions: ItemPack = new ItemPack('Deep Dungeons', ItemType.Minion, [
+  '265', // Wind-up Ravana
+  '262', // Wind-up Lakshmi
+  '261', // Wind-up Susano
+  '263', // Wind-up Bismarck
+  '247', // Road Sparrow
+  '258', // Ghido
+  '241', // Odder Otter
+  '246', // Bom Boko
+  '245', // Bombfish
+  '244', // Tiny Tatsunoko
+  '237', // Castaway Chocobo Chick
+  '190', // Baby Brachiosaur
+  '219', // Wind-up Edda
+  '216', // Shaggy Shoat
+  '186', // Wind-up Shiva
+  '185', // Wind-up Ramuh
+  '197', // Dwarf Rabbit
+  '171', // Wind-up Leviathan
+  '170', // Wind-up Titan
+  '169', // Wind-up Garuda
+  '180', // Morpho
+  '168', // Wind-up Ifrit
+  '162', // Hunting Hawk
+  '166', // Korpokkur Kid
+  '157', // Paissa Brat
+  '138', // Ugly Duckling
+  '137', // Owlet
+  '146', // Gestahl
+  '141', // Lesser Panda
+  '134', // Unicolt
+  '142', // Page 63
+  '139', // Gaelikitten
+  '112', // Mummy's Little Mummy
+  '96', // Miniature Minecart
+  '97', // Nutkin
+  '80', // Baby Opo-opo
+  '56', // Minute Mindflayer
+  '16', // Bluebird
+  '27', // Tiny Bulb
+  '23', // Wind-up Tonberry
+]);
+
 export const MinionPacks: ItemPack[] = [
-  trialMinions, raidMinions, eurekaMinions, fateMinions, questMinions, dungeonMinions
+  trialMinions, raidMinions, eurekaMinions, fateMinions, questMinions, dungeonMinions, deepDungeonMinions
 ];
