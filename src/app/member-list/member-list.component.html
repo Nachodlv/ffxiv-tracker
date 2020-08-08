@@ -20,7 +20,7 @@
       </label>
     </div>
   </div>
-  <app-pack-selector (packSelected)="packSelected = $event"
+  <app-pack-selector (packSelectedChange)="packSelected = $event"
                      [packs]="itemTypeSelected == itemType.Mount ? mountsPacks: minionsPacks"></app-pack-selector>
 </div>
 

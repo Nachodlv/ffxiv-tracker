@@ -1,8 +1,15 @@
 <div id="pack-selector" class="row m-0">
-  <div class="form-check col-auto" *ngFor="let pack of packs">
-    <input [(ngModel)]="pack.selected" class="form-check-input" type="checkbox" value="" id="defaultCheck1"
-           (change)="checkboxClicked($event, pack)">
-    <label class="form-check-label" for="defaultCheck1">
+  <div class="form-check col-auto">
+    <input class="form-check-input" type="radio" [value]="defaultPack" [ngModel]="packSelected"
+           (ngModelChange)="checkboxClicked($event)" checked name="packs">
+    <label class="form-check-label">
+      Collection
+    </label>
+  </div>
+  <div class="form-check col-auto" *ngFor="let pack of packCheckBoxes">
+    <input [id]="pack.itemPack.name" class="form-check-input" type="radio" [ngModel]="packSelected"
+           (ngModelChange)="checkboxClicked($event)" [value]="pack" name="packs">
+    <label class="form-check-label" [for]="pack.itemPack.name">
       {{pack.itemPack.name}}
     </label>
   </div>

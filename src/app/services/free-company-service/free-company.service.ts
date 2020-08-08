@@ -31,7 +31,7 @@ export class FreeCompanyService {
 
   getCompanyMembers(id: string): Observable<Player[]> {
     return this.getFreeCompanyById(id).pipe(flatMap(fc => {
-      if (fc.players$) {
+      if (fc.players$ !== undefined) {
         return fc.players$;
       }
       const players = this.requestCompanyMember(id);

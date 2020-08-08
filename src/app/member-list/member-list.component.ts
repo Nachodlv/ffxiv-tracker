@@ -98,7 +98,6 @@ export class MemberListComponent implements OnInit, OnDestroy {
       players[i].extraInformation$ = this.characterService.getPlayerExtraInformation(players[i].id);
       this.playerSubscriptions.push(players[i].extraInformation$.subscribe((info) => {
           this.playersLoaded++;
-          this.changeDetector.detectChanges();
           if (this.playersInitialized < players.length) {
             this.initializePlayers(players);
           }

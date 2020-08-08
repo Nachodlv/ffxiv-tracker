@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Item, ItemType} from '../../models/item';
 import {ItemService} from '../../services/item-service/item.service';
@@ -9,14 +9,15 @@ import {ItemPack} from '../../models/packs/item-pack';
   templateUrl: './pack-selector.component.html',
   styleUrls: ['./pack-selector.component.scss']
 })
-export class PackSelectorComponent implements OnInit {
-  packs: PackCheckBox[] = [];
+export class PackSelectorComponent implements OnInit, OnChanges {
 
-  @Output() packSelected = new EventEmitter<ItemPack>();
+  @Output() packSelectedChange = new EventEmitter<ItemPack>();
 
-  @Input('packs') set setPacks(packs: ItemPack[]) {
-    this.packs = packs.map(pack => new PackCheckBox(pack));
-  }
+  @Input() private packs: ItemPack[];
+
+  defaultPack = new PackCheckBox(undefined, true);
+  packSelected: PackCheckBox = this.defaultPack;
+  packCheckBoxes: PackCheckBox[] = [];
 
   constructor(
     private itemService: ItemService) {
@@ -25,22 +26,21 @@ export class PackSelectorComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
-  checkboxClicked(event: any, packSelected: PackCheckBox): void {
-    packSelected.selected = event.target.checked;
-    if (packSelected.selected) {
-      this.packs.forEach(pack => {
-        if (pack !== packSelected) {
-          pack.selected = false;
-        }
-      });
-      if (!packSelected.initialized) {
-        this.initializePack(packSelected);
-      }
-      this.packSelected.emit(packSelected.itemPack);
-    } else {
-      this.packSelected.emit(undefined);
+  ngOnChanges(changes: SimpleChanges): void {
+    const packs = changes.packs;
+    if (packs && packs.currentValue !== packs.previousValue) {
+      console.log('Packs changed!');
+      this.packCheckBoxes = packs.currentValue.map(pack => new PackCheckBox(pack));
+      this.packSelected = this.defaultPack;
     }
+  }
+
+  checkboxClicked(packSelected: PackCheckBox ): void {
+    if (!packSelected.initialized) {
+      this.initializePack(packSelected);
+    }
+    this.packSelected = packSelected;
+    this.packSelectedChange.emit(packSelected.itemPack);
   }
 
   private initializePack(pack: PackCheckBox): void {
@@ -53,9 +53,11 @@ export class PackSelectorComponent implements OnInit {
     pack.itemPack.items$ = observables;
     pack.initialized = true;
   }
+
+
 }
 
 class PackCheckBox {
-  constructor(public itemPack: ItemPack, public selected: boolean = false, public initialized: boolean = false) {
+  constructor(public itemPack: ItemPack | undefined, public initialized: boolean = false) {
   }
 }
