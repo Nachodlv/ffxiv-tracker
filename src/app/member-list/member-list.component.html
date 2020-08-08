@@ -34,8 +34,19 @@
 </div>
 <div class="col-12" *ngFor="let player  of players" id="member-list">
   <ng-container *ngIf="player.extraInformation$ && player.extraInformation$ | async as extraInformation">
-    <div class="player-name"
-         *ngIf="(player | searchPlayers : searchInput) || (!this.packSelected && !getPlayerSearch(player.id).emptyItems) || (this.packSelected && !getPlayerSearch(player.id).emptyPack)">{{player.name}}</div>
+    <div class="row">
+      <div class="player-name col-auto"
+           *ngIf="(player | searchPlayers : searchInput) || (!this.packSelected && !getPlayerSearch(player.id).emptyItems) || (this.packSelected && !getPlayerSearch(player.id).emptyPack)">
+        {{player.name}}
+      </div>
+      <div *ngIf="itemTypeSelected==itemType.Mount" class="item-quantity col-auto" [tooltip]="extraInformation.mounts.length + ' mounts'">
+        {{extraInformation.mounts.length}}
+      </div>
+      <div *ngIf="itemTypeSelected==itemType.Minion" class="item-quantity col-auto" [tooltip]="extraInformation.minions.length + ' minions'">
+        {{extraInformation.minions.length}}
+      </div>
+    </div>
+
     <ng-container *ngIf="!packSelected">
       <app-item-list *ngIf="itemTypeSelected == itemType.Mount" [items]="extraInformation.mounts"
                      [shouldFilter]="!(player | searchPlayers : searchInput)" [searchInput]="searchInput"
