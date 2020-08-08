@@ -91,7 +91,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   private initializePlayers(players: Player[]): void {
-    const playersToInitialize = 2;
+    const playersToInitialize = 4;
     const currentInitialized = this.playersInitialized;
     this.playersInitialized += playersToInitialize;
     for (let i = currentInitialized; i < Math.min(currentInitialized + playersToInitialize, players.length); i++) {
