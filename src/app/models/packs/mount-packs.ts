@@ -17,7 +17,7 @@ const trialPack: ItemPack = new ItemPack('Trials', ItemType.Mount, [
   '76', // Rose Lanner
   '77', // Round Lanner
   '78', // Warring Lanner
-  '78', // Dark Lanner
+  '90', // Dark Lanner
   '98', // Sophic Lanner
   '104', // Demonic Lanner
   '115', // Blissful Kamuy
