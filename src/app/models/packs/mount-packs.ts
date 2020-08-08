@@ -74,6 +74,7 @@ const eurekaMounts = new ItemPack('Eureka', ItemType.Mount, [
   '184', // Eurekan Petrel
   '178', // Eldthurs
   '150', // Tyrannosaur
+  '186', // Ozma
 ]);
 
 
