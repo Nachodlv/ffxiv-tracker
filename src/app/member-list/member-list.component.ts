@@ -20,7 +20,7 @@ import {MinionPacks} from '../models/packs/minion-packs';
 export class MemberListComponent implements OnInit, OnDestroy {
 
   freeCompany$: Observable<FreeCompany>;
-  players$: Observable<Player[]>;
+  players: Player[] = [];
   packSelected: ItemPack | undefined;
   itemTypeSelected: ItemType = ItemType.Mount;
   itemType = ItemType;
@@ -34,6 +34,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   private playerSearch = new Map<string, PlayerSearch>();
   private paramsSubscription: Subscription;
   private playerSubscriptions: Subscription[] = [];
+  private companyMembersSubscription: Subscription;
 
   constructor(private freeCompanyService: FreeCompanyService,
               private characterService: CharacterService,
@@ -54,12 +55,16 @@ export class MemberListComponent implements OnInit, OnDestroy {
         this.router.navigate([]);
       }
       this.freeCompany$ = this.freeCompanyService.getFreeCompanyById(fcId);
-      this.players$ = this.freeCompanyService.getCompanyMembers(fcId).pipe(tap((players: Player[]) => {
+      this.companyMembersSubscription = this.freeCompanyService.getCompanyMembers(fcId).subscribe((players: Player[]) => {
           players.forEach(player => this.playerSearch.set(player.id, new PlayerSearch()));
+          this.players = players;
           this.totalPlayers = players.length;
+          this.playersInitialized = 0;
+          this.playersLoaded = 0;
+          this.playerSubscriptions.forEach(sub => sub.unsubscribe());
           this.initializePlayers(players);
         }
-      ));
+      );
     });
   }
 
@@ -86,14 +91,14 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   private initializePlayers(players: Player[]): void {
-    const playersToInitialize = 4;
+    const playersToInitialize = 2;
     const currentInitialized = this.playersInitialized;
     this.playersInitialized += playersToInitialize;
     for (let i = currentInitialized; i < Math.min(currentInitialized + playersToInitialize, players.length); i++) {
       players[i].extraInformation$ = this.characterService.getPlayerExtraInformation(players[i].id);
       this.playerSubscriptions.push(players[i].extraInformation$.subscribe((info) => {
           this.playersLoaded++;
-          this.changeDetector.markForCheck();
+          this.changeDetector.detectChanges();
           if (this.playersInitialized < players.length) {
             this.initializePlayers(players);
           }
@@ -105,6 +110,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.paramsSubscription?.unsubscribe();
     this.playerSubscriptions.forEach(s => s.unsubscribe());
+    this.companyMembersSubscription?.unsubscribe();
   }
 
 }

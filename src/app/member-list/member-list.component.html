@@ -32,7 +32,7 @@
                  [animate]="true">{{playersLoaded}} / {{totalPlayers}}</progressbar>
   </div>
 </div>
-<div class="col-12" *ngFor="let player  of players$ | async" id="member-list">
+<div class="col-12" *ngFor="let player  of players" id="member-list">
   <ng-container *ngIf="player.extraInformation$ && player.extraInformation$ | async as extraInformation">
     <div class="player-name"
          *ngIf="(player | searchPlayers : searchInput) || (!this.packSelected && !getPlayerSearch(player.id).emptyItems) || (this.packSelected && !getPlayerSearch(player.id).emptyPack)">{{player.name}}</div>
@@ -59,6 +59,6 @@
   <ngx-spinner size="medium" [fullScreen]="false" color="#000000" bdColor="#ffffff" type="ball-fall"></ngx-spinner>
 </div>
 
-<ng-container *ngIf="totalPlayers == 0 || !(players$ | async)">
+<ng-container *ngIf="totalPlayers == 0 || this.players.length == 0">
   <ngx-spinner [fullScreen]="true" type="ball-spin-clockwise"></ngx-spinner>
 </ng-container>
