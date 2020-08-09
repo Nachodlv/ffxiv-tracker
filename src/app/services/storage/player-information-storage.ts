@@ -57,17 +57,11 @@ export class PlayerInformationStorage extends LocalStorageSubject<PlayerExtraInf
     const mountsObservables = combineLatest(info.mountsIds.map(m => this.getMount(m)));
     const minionsObservables = combineLatest(info.minionsIds.map(m => this.getMinion(m)));
     return combineLatest([mountsObservables, minionsObservables]).pipe(map((result) => {
-      console.log(result);
       return new PlayerExtraInformation(result[0], result[1]);
     }));
   }
 
   private getItemId(item: Item, items: Item[]): string {
-    if(!items.find(i => i.name.toLowerCase() === item.name.toLowerCase())) {
-      console.log(item);
-      console.log(items);
-      console.log('---------------------');
-    }
     return items.find(i => i.name.toLowerCase() === item.name.toLowerCase()).id;
   }
 }

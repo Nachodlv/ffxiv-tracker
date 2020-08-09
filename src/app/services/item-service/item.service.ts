@@ -29,6 +29,16 @@ export class ItemService {
     return this.minions.get('', () => this.getAllMinions()).pipe(map(items => items.find(i => i.id === id)));
   }
 
+  getMounts(ids: string[]): Observable<Item[]> {
+    return this.mounts.get('', () => this.getAllMounts())
+      .pipe(map(items => items.filter(i => ids.some(id => i.id === id))));
+  }
+
+  getMinions(ids: string[]): Observable<Item[]> {
+    return this.minions.get('', () => this.getAllMinions())
+      .pipe(map(items => items.filter(i => ids.some(id => i.id === id))));
+  }
+
   getAllMounts(): Observable<Item[]> {
     return this.mounts.get('', () => this.getAllItems(this.allMountsUrl));
   }
@@ -42,7 +52,6 @@ export class ItemService {
       const itemPagination = PaginationResult.fromJson(response, new Item('', ''));
       const newItems = [...items, ...itemPagination.results];
       if (itemPagination.pagination.page < itemPagination.pagination.pageTotal) {
-        console.log(`Total items for ${url}: ${newItems.length}`);
         return this.getAllItems(url, page + 1, newItems);
       } else {
         return of(newItems);

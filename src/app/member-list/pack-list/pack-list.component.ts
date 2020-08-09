@@ -29,10 +29,7 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = forkJoin(this.packSelected.items$).subscribe(items => {
-      this.packItems = items;
-      this.loaded = true;
-    });
+    this.packSelectedChange(this.packSelected);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -65,7 +62,7 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-    this.subscription = forkJoin(newPack.items$).subscribe(items => {
+    this.subscription = newPack.items$.subscribe(items => {
       this.packItems = items;
       this.loaded = true;
       this.searchInputChanged(this.searchInput);

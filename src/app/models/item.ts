@@ -5,7 +5,7 @@ export class Item implements Model{
   }
 
   static fromJson(json: any): Item {
-    return new Item(json.IconSmall != null ? `https://xivapi.com${json.IconSmall}` : json.Icon, json.Name, json.ID);
+    return new Item(json.IconSmall != null ? `https://xivapi.com${json.IconSmall}` : json.Icon, json.Name, json.ID + '');
   }
 
   fromJson(json: any): Model {

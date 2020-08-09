@@ -29,13 +29,12 @@ export class PackSelectorComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const packs = changes.packs;
     if (packs && packs.currentValue !== packs.previousValue) {
-      console.log('Packs changed!');
       this.packCheckBoxes = packs.currentValue.map(pack => new PackCheckBox(pack));
       this.packSelected = this.defaultPack;
     }
   }
 
-  checkboxClicked(packSelected: PackCheckBox ): void {
+  checkboxClicked(packSelected: PackCheckBox): void {
     if (!packSelected.initialized) {
       this.initializePack(packSelected);
     }
@@ -44,13 +43,10 @@ export class PackSelectorComponent implements OnInit, OnChanges {
   }
 
   private initializePack(pack: PackCheckBox): void {
-    const observables: Observable<Item>[] = [];
-    pack.itemPack.ids.forEach(item => {
-      observables.push(pack.itemPack.type === ItemType.Mount ?
-        this.itemService.getMount(item) :
-        this.itemService.getMinion(item));
-    });
-    pack.itemPack.items$ = observables;
+    pack.itemPack.items$ =
+      pack.itemPack.type === ItemType.Mount ?
+        this.itemService.getMounts(pack.itemPack.ids) :
+        this.itemService.getMinions(pack.itemPack.ids);
     pack.initialized = true;
   }
 
