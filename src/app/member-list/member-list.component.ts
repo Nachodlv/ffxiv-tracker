@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {FreeCompanyService} from '../services/free-company-service/free-company.service';
-import {Observable, Subscription} from 'rxjs';
+import {combineLatest, forkJoin, Observable, Subscription} from 'rxjs';
 import {Player} from '../models/player';
-import {map, tap} from 'rxjs/operators';
+import {map, take, tap} from 'rxjs/operators';
 import {CharacterService} from '../services/character-service/character.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {ItemType} from '../models/item';
@@ -11,6 +11,7 @@ import {ActivatedRoute, ParamMap, Params, Router} from '@angular/router';
 import {MountPacks} from '../models/packs/mount-packs';
 import {ItemPack} from '../models/packs/item-pack';
 import {MinionPacks} from '../models/packs/minion-packs';
+import {ItemService} from '../services/item-service/item.service';
 
 @Component({
   selector: 'app-member-list',
@@ -38,6 +39,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
 
   constructor(private freeCompanyService: FreeCompanyService,
               private characterService: CharacterService,
+              private itemService: ItemService,
               private spinner: NgxSpinnerService,
               private changeDetector: ChangeDetectorRef,
               private activatedRoute: ActivatedRoute,
@@ -55,7 +57,14 @@ export class MemberListComponent implements OnInit, OnDestroy {
         this.router.navigate([]);
       }
       this.freeCompany$ = this.freeCompanyService.getFreeCompanyById(fcId);
-      this.companyMembersSubscription = this.freeCompanyService.getCompanyMembers(fcId).subscribe((players: Player[]) => {
+      this.companyMembersSubscription = combineLatest([
+        this.itemService.getAllMounts(),
+        this.itemService.getAllMinions(),
+        this.freeCompanyService.getCompanyMembers(fcId)]).subscribe((results) => {
+          if (!results[2]) {
+            return;
+          }
+          const players: Player[] = results[2];
           players.forEach(player => this.playerSearch.set(player.id, new PlayerSearch()));
           this.players = players;
           this.totalPlayers = players.length;

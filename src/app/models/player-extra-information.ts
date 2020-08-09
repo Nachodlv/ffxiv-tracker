@@ -10,3 +10,9 @@ export class PlayerExtraInformation {
       json.Minions.map(minion => Item.fromJson(minion)));
   }
 }
+
+export class PlayerExtraInformationCached {
+  constructor(public mountsIds: string[], public minionsIds: string[]) {
+  }
+
+}

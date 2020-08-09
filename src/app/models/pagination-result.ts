@@ -9,6 +9,11 @@ export class PaginationResult<T extends Model> {
   }
 }
 
+export class PaginationResultCached {
+  constructor(public pagination: Pagination, public resultsIds: string[]) {
+  }
+}
+
 class Pagination {
   constructor(
     public page: number,

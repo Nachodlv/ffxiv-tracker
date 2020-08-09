@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {FfxivHttpClientService} from '../ffxiv-http-client/ffxiv-http-client.service';
-import {Observable, ReplaySubject} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {PlayerExtraInformation} from '../../models/player-extra-information';
-import {CacheSubject} from "../cacheSubject";
+import {LocalStorageSubject} from '../storage/local-storage';
+import {ItemService} from '../item-service/item.service';
+import {PlayerInformationStorage} from '../storage/player-information-storage';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +13,24 @@ import {CacheSubject} from "../cacheSubject";
 export class CharacterService {
   private url = 'character';
   private mountUrl = '?data=MIMO';
-  private playerMounts = new CacheSubject<PlayerExtraInformation, string>();
+  private playerInformation: PlayerInformationStorage;
 
-  constructor(private ffxivHttpClientService: FfxivHttpClientService) {
+  constructor(private ffxivHttpClientService: FfxivHttpClientService, private itemService: ItemService) {
+    this.playerInformation = new PlayerInformationStorage(
+      'player-information',
+      (id) => itemService.getMount(id),
+      (id) => itemService.getMinion(id),
+      itemService.getAllMounts(),
+      itemService.getAllMinions());
   }
 
   getPlayerExtraInformation(playerId: string): Observable<PlayerExtraInformation> {
-    return this.playerMounts.getObservable(playerId, () => this.requestPlayerExtraInformation(playerId));
+    return this.playerInformation.get(playerId, () => this.requestPlayerExtraInformation(playerId));
   }
 
   private requestPlayerExtraInformation(playerId: string): Observable<PlayerExtraInformation> {
     return this.ffxivHttpClientService.get(`${this.url}/${playerId}${this.mountUrl}`).pipe(map(response => {
-      return PlayerExtraInformation.fromJson(response);
+        return PlayerExtraInformation.fromJson(response);
       }
     ));
   }

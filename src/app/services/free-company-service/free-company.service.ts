@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Observable, of, ReplaySubject} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Player} from '../../models/player';
-import {flatMap, map, tap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {FfxivHttpClientService} from '../ffxiv-http-client/ffxiv-http-client.service';
 import {PaginationResult} from '../../models/pagination-result';
 import {FreeCompany} from '../../models/free-company';
-import {PlayerExtraInformation} from '../../models/player-extra-information';
-import {CacheSubject} from '../cacheSubject';
+import {LocalStorageSubject} from '../storage/local-storage';
+import {FreeCompanyPaginatorStorage} from '../storage/free-company-paginator-storage';
 
 @Injectable({
   providedIn: 'root'
@@ -15,34 +15,28 @@ export class FreeCompanyService {
 
   private url = 'freecompany';
   private membersUrl = 'data=FCM';
-  private freeCompanies = new CacheSubject<FreeCompany, string>();
-  private freeCompaniesByName = new CacheSubject<PaginationResult<FreeCompany>, string>();
+  private freeCompanies = new LocalStorageSubject<FreeCompany>('free-companies');
+  private freeCompaniesByName = new FreeCompanyPaginatorStorage('free-companies-by-name', this.freeCompanies);
+  private freeCompanyPlayers = new LocalStorageSubject<Players>('free-company-players');
 
   constructor(private ffxivHttpClient: FfxivHttpClientService) {
   }
 
   getFreeCompanyById(id: string): Observable<FreeCompany> {
-    return this.freeCompanies.getObservable(id, () => this.requestFreeCompanyById(id));
+    return this.freeCompanies.get(id, () => this.requestFreeCompanyById(id));
   }
 
   searchFreeCompanyByName(name: string, page: number): Observable<PaginationResult<FreeCompany>> {
-    return this.freeCompaniesByName.getObservable(`${name}/${page}`, () => this.requestFreeCompanyByName(name, page));
+    return this.freeCompaniesByName.get(`${name}/${page}`, () => this.requestFreeCompanyByName(name, page));
   }
 
   getCompanyMembers(id: string): Observable<Player[]> {
-    return this.getFreeCompanyById(id).pipe(flatMap(fc => {
-      if (fc.players$ !== undefined) {
-        return fc.players$;
-      }
-      const players = this.requestCompanyMember(id);
-      fc.players$ = players;
-      return players;
-    }));
+    return this.freeCompanyPlayers.get(id, () => this.requestCompanyMember(id)).pipe(map(players => players?.players));
   }
 
-  private requestCompanyMember(id: string): Observable<Player[]> {
+  private requestCompanyMember(id: string): Observable<Players> {
     return this.ffxivHttpClient.get(`${this.url}/${id}?${this.membersUrl}`).pipe(map((response: any) => {
-      return response.FreeCompanyMembers.map(member => Player.fromJson(member));
+      return new Players(response.FreeCompanyMembers.map(member => Player.fromJson(member)));
     }));
   }
 
@@ -58,5 +52,10 @@ export class FreeCompanyService {
       pagination.results.forEach(fc => this.freeCompanies.set(fc.id, fc));
       return pagination;
     }));
+  }
+}
+
+class Players {
+  constructor(public players: Player[]) {
   }
 }

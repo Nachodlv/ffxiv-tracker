@@ -39,10 +39,10 @@
            *ngIf="(player | searchPlayers : searchInput) || (!this.packSelected && !getPlayerSearch(player.id).emptyItems) || (this.packSelected && !getPlayerSearch(player.id).emptyPack)">
         {{player.name}}
       </div>
-      <div *ngIf="itemTypeSelected==itemType.Mount" class="item-quantity col-auto" [tooltip]="extraInformation.mounts.length + ' mounts'">
+      <div *ngIf="itemTypeSelected==itemType.Mount && extraInformation.mounts.length > 0" class="item-quantity col-auto" [tooltip]="extraInformation.mounts.length + ' mounts'">
         {{extraInformation.mounts.length}}
       </div>
-      <div *ngIf="itemTypeSelected==itemType.Minion" class="item-quantity col-auto" [tooltip]="extraInformation.minions.length + ' minions'">
+      <div *ngIf="itemTypeSelected==itemType.Minion && extraInformation.minions.length > 0" class="item-quantity col-auto" [tooltip]="extraInformation.minions.length + ' minions'">
         {{extraInformation.minions.length}}
       </div>
     </div>
