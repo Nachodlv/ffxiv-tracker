@@ -1,4 +1,4 @@
-﻿import {Item} from './item';
+﻿import {Item, ItemType} from './item';
 
 export class PlayerExtraInformation {
   constructor(public mounts: Item[] = [], public minions: Item[] = []) {
@@ -6,8 +6,8 @@ export class PlayerExtraInformation {
 
   public static fromJson(json: any): PlayerExtraInformation {
     return new PlayerExtraInformation(
-      json.Mounts.map(mount => Item.fromJson(mount)),
-      json.Minions.map(minion => Item.fromJson(minion)));
+      json.Mounts.map(mount => Item.fromJson(mount, ItemType.Mount)),
+      json.Minions.map(minion => Item.fromJson(minion, ItemType.Minion)));
   }
 }
 

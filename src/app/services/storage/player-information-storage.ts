@@ -2,7 +2,7 @@
 import {PlayerExtraInformation, PlayerExtraInformationCached} from '../../models/player-extra-information';
 import {Item} from '../../models/item';
 import {combineLatest, forkJoin, Observable, of, ReplaySubject, Subject} from 'rxjs';
-import {filter, map, switchMap, take, tap} from 'rxjs/operators';
+import {filter, flatMap, map, switchMap, take, tap} from 'rxjs/operators';
 
 export class PlayerInformationStorage extends LocalStorageSubject<PlayerExtraInformation> {
 
@@ -25,17 +25,15 @@ export class PlayerInformationStorage extends LocalStorageSubject<PlayerExtraInf
     if (cache) {
       cache.subscribe(t => reloader$.next(t));
     } else {
-      request().pipe(tap(data => this.set(key, data))).subscribe(t => reloader$.next(t));
+      request().pipe(flatMap(data => this.setIds(data)), tap(data => this.set(key, data))).subscribe(t => reloader$.next(t));
     }
     return reloader$.asObservable().pipe(filter(data => data !== undefined));
   }
 
   set(key: string, model: PlayerExtraInformation) {
-    const subscription = this.toInfoCached(model).subscribe(cached => {
-      localStorage.setItem(this.getKeyForModel(key), JSON.stringify(new CacheModel(cached)));
-    });
+    const cache = this.toInfoCached(model);
+    localStorage.setItem(this.getKeyForModel(key), JSON.stringify(new CacheModel(cache)));
   }
-
 
   private getFromCacheObservable(key: string): Observable<PlayerExtraInformation> | undefined {
     const info = CacheModel.fromJson<PlayerExtraInformationCached>(localStorage.getItem(this.getKeyForModel(key)));
@@ -45,28 +43,34 @@ export class PlayerInformationStorage extends LocalStorageSubject<PlayerExtraInf
     return this.fromInfoCached(info.model);
   }
 
-  private toInfoCached(info: PlayerExtraInformation): Observable<PlayerExtraInformationCached> {
-    return combineLatest([this.allMounts, this.allMinions]).pipe(map(result => {
-      return new PlayerExtraInformationCached(
-        info.mounts.map(m => this.getItemId(m, result[0])),
-        info.minions.map(m => this.getItemId(m, result[1])));
-    }));
+  private toInfoCached(info: PlayerExtraInformation): PlayerExtraInformationCached {
+    return new PlayerExtraInformationCached(
+      info.mounts.map(m => m.id),
+      info.minions.map(m => m.id));
   }
 
   private fromInfoCached(info: PlayerExtraInformationCached): Observable<PlayerExtraInformation> {
-    const mountsObservables = this.getItemObservable(info.mountsIds, this.getMount);
-    const minionsObservables =  this.getItemObservable(info.minionsIds, this.getMinion);
-    return combineLatest([mountsObservables, minionsObservables]).pipe(map((result) => {
+    return this.getItemsObservables(info.mountsIds, info.minionsIds).pipe(map((result) => {
       return new PlayerExtraInformation(result[0], result[1]);
     }));
   }
 
-  private getItemObservable(ids: string[], request: (id: string) => Observable<Item>): Observable<Item[]> {
-    const observables = ids.map(id => request(id));
-    if (observables.length === 0) {
-      return of([]);
-    }
-    return combineLatest(observables);
+  private getItemsObservables(mountsIds: string[], minionsIds: string[]): Observable<[Item[], Item[]]> {
+    const mountsObservables = this.getItemObservable(mountsIds, this.allMounts);
+    const minionsObservables = this.getItemObservable(minionsIds, this.allMinions);
+    return combineLatest([mountsObservables, minionsObservables]);
+  }
+
+  private getItemObservable(ids: string[], request: Observable<Item[]>): Observable<Item[]> {
+    return request.pipe(map(items => items.filter(item => ids.some(id => id === item.id))));
+  }
+
+  private setIds(info: PlayerExtraInformation): Observable<PlayerExtraInformation> {
+    return combineLatest([this.allMounts, this.allMinions]).pipe(map(result => {
+      info.mounts.forEach(m => m.id = this.getItemId(m, result[0]));
+      info.minions.forEach(m => m.id = this.getItemId(m, result[1]));
+      return info;
+    }));
   }
 
   private getItemId(item: Item, items: Item[]): string {

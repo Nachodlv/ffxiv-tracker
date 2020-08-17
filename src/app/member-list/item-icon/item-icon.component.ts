@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Item} from '../../models/item';
+import {Item, ItemType} from '../../models/item';
 
 @Component({
   selector: 'app-item-icon',
@@ -16,4 +16,9 @@ export class ItemIconComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  openXivCollect(): void {
+    window.open(
+      `https://ffxivcollect.com/${this.item.itemType === ItemType.Mount ? 'mounts' : 'minions'}/${this.item.id}`,
+      '_blank');
+  }
 }

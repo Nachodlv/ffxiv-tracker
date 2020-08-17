@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {forkJoin, merge, Observable, of, ReplaySubject} from 'rxjs';
-import {Item} from '../../models/item';
+import {Observable, of} from 'rxjs';
+import {Item, ItemType} from '../../models/item';
 import {FfxivHttpClientService} from '../ffxiv-http-client/ffxiv-http-client.service';
-import {flatMap, map, mergeMap, tap} from 'rxjs/operators';
-import {CacheModel, LocalStorageSubject} from '../storage/local-storage';
+import {flatMap, map} from 'rxjs/operators';
+import {LocalStorageSubject} from '../storage/local-storage';
 import {PaginationResult} from '../../models/pagination-result';
 
 @Injectable({
@@ -11,8 +11,8 @@ import {PaginationResult} from '../../models/pagination-result';
 })
 export class ItemService {
 
-  private allMountsUrl = 'search?indexes=Mount&filters=Order>=0&columns=ID,Name,IconSmall';
-  private allMinionsUrl = 'Companion?columns=ID,Name,IconSmall';
+  private allMountsUrl = 'search?indexes=Mount&filters=Order>=0&columns=ID,Name,IconSmall,UrlType';
+  private allMinionsUrl = 'Companion?columns=ID,Name,IconSmall,UrlType';
 
   mounts = new LocalStorageSubject<Item[]>('mounts');
   minions = new LocalStorageSubject<Item[]>('minions');
@@ -49,7 +49,7 @@ export class ItemService {
 
   private getAllItems(url: string, page: number = 1, items: Item[] = []): Observable<Item[]> {
     return this.ffxivHttpClientService.get(`${url}&page=${page}`).pipe(flatMap(response => {
-      const itemPagination = PaginationResult.fromJson(response, new Item('', ''));
+      const itemPagination = PaginationResult.fromJson(response, new Item('', '', ItemType.Minion));
       const newItems = [...items, ...itemPagination.results.filter(item => item.name)];
       if (itemPagination.pagination.page < itemPagination.pagination.pageTotal) {
         return this.getAllItems(url, page + 1, newItems);

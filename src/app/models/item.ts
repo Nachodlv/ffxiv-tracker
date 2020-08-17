@@ -1,11 +1,15 @@
 import {Model} from './model';
 
-export class Item implements Model{
-  constructor(public icon: string, public name: string, public id?: string | undefined) {
+export class Item implements Model {
+  constructor(public icon: string, public name: string, public itemType: ItemType, public id?: string | undefined) {
   }
 
-  static fromJson(json: any): Item {
-    return new Item(this.addUrl(json.IconSmall != null ? json.IconSmall : json.Icon), json.Name, json.ID + '');
+  static fromJson(json: any, itemType?: ItemType): Item {
+    return new Item(
+      this.addUrl(json.IconSmall != null ? json.IconSmall : json.Icon),
+      json.Name,
+      json.UrlType === 'Mount' || itemType === ItemType.Mount ? ItemType.Mount : ItemType.Minion,
+      json.ID + '');
   }
 
   private static addUrl(icon: string): string {
