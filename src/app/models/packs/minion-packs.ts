@@ -164,6 +164,49 @@ const deepDungeonMinions: ItemPack = new ItemPack('Deep Dungeons', ItemType.Mini
   '23', // Wind-up Tonberry
 ]);
 
+const craftingMinions = new ItemPack('Crafting', ItemType.Minion, [
+  '327', // Seitei
+  '303', // Scarlet Peacock
+  '294', // Wind-up Sadu
+  '282', // Wind-up Magnai
+  '278', // Private Moai
+  '284', // Byakko Cub
+  '275', // Wind-up Shinryu
+  '265', // Wind-up Ravana
+  '255', // Wind-up Chimera
+  '262', // Wind-up Lakshmi
+  '261', // Wind-up Susano
+  '263', // Wind-up Bismarck
+  '186', // Wind-up Shiva
+  '185', // Wind-up Ramuh
+  '171', // Wind-up Leviathan
+  '170', // Wind-up Titan
+  '169', // Wind-up Garuda
+  '168', // Wind-up Ifrit
+  '158', // Wind-up Illuminatus
+  '147', // Steam-powered Gobwalker G-VII
+  '140', // Clockwork Barrow
+  '143', // Iron Dwarf
+  '136', // Atrophied Atomos
+  '100', // Model Magitek Bit
+  '95', // Nana Bear
+  '81', // Magic Broom
+  '66', // Plush Cushion
+  '43', // Model Vanguard
+  '53', // Wind-up Qiqirn
+  '39', // Wind-up Aldgoat
+  '29', // Wind-up Dullahan
+  '22', // Gravel Golem
+]);
+
 export const MinionPacks: ItemPack[] = [
-  allMinions, trialMinions, raidMinions, eurekaMinions, fateMinions, questMinions, dungeonMinions, deepDungeonMinions
+  allMinions,
+  trialMinions,
+  raidMinions,
+  eurekaMinions,
+  fateMinions,
+  questMinions,
+  dungeonMinions,
+  deepDungeonMinions,
+  craftingMinions
 ];
