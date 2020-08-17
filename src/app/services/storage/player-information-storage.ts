@@ -1,7 +1,7 @@
 ﻿import {CacheModel, LocalStorageSubject} from './local-storage';
 import {PlayerExtraInformation, PlayerExtraInformationCached} from '../../models/player-extra-information';
 import {Item} from '../../models/item';
-import {combineLatest, forkJoin, Observable, ReplaySubject, Subject} from 'rxjs';
+import {combineLatest, forkJoin, Observable, of, ReplaySubject, Subject} from 'rxjs';
 import {filter, map, switchMap, take, tap} from 'rxjs/operators';
 
 export class PlayerInformationStorage extends LocalStorageSubject<PlayerExtraInformation> {
@@ -54,11 +54,19 @@ export class PlayerInformationStorage extends LocalStorageSubject<PlayerExtraInf
   }
 
   private fromInfoCached(info: PlayerExtraInformationCached): Observable<PlayerExtraInformation> {
-    const mountsObservables = combineLatest(info.mountsIds.map(m => this.getMount(m)));
-    const minionsObservables = combineLatest(info.minionsIds.map(m => this.getMinion(m)));
+    const mountsObservables = this.getItemObservable(info.mountsIds, this.getMount);
+    const minionsObservables =  this.getItemObservable(info.minionsIds, this.getMinion);
     return combineLatest([mountsObservables, minionsObservables]).pipe(map((result) => {
       return new PlayerExtraInformation(result[0], result[1]);
     }));
+  }
+
+  private getItemObservable(ids: string[], request: (id: string) => Observable<Item>): Observable<Item[]> {
+    const observables = ids.map(id => request(id));
+    if (observables.length === 0) {
+      return of([]);
+    }
+    return combineLatest(observables);
   }
 
   private getItemId(item: Item, items: Item[]): string {

@@ -16,13 +16,24 @@ export class FfxivHttpClientService {
   constructor(private httpClient: HttpClient) {
   }
 
-  get(url: string): Observable<any> {
-    return this.executeFunctionWithDelay(() => this.makeGetRequest(url));
+  get(url: string, cache: boolean = true): Observable<any> {
+    return this.executeFunctionWithDelay(() => this.makeGetRequest(url, cache));
   }
 
-  private makeGetRequest(url: string): Observable<any> {
+  private makeGetRequest(url: string, cache: boolean): Observable<any> {
+    let header = new HttpHeaders()
+      .append('Access-Control-Allow-Origin', '*')
+      .append('Access-Control-Allow-Headers', '*')
+      .append('Content-type', 'application/json');
+    if (!cache) {
+      header = header
+        .append('Cache-Control', 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0')
+        .append('Pragma', 'no-cache')
+        .append('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
+    }
+
     return this.httpClient.get(this.baseUrl + url, {
-      headers: {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Content-type': 'application/json'}
+      headers: header
     }).pipe(
       retryWhen(errors => errors.pipe(concatMap((error) => {
         if (error.status === 429) {

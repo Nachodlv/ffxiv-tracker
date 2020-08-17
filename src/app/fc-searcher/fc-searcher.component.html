@@ -13,7 +13,7 @@
   </div>
 
   <div id="results-container" class="row container" *ngIf="paginationResult$ | async as paginationResult;">
-    <div class="row" id="fc-cards-container">
+    <div class="row w-100" id="fc-cards-container">
       <app-fc-card class="col-md-4 col-sm-6 mb-3" *ngFor="let freeCompany of paginationResult.results"
                    [freeCompany]="freeCompany"></app-fc-card>
     </div>
