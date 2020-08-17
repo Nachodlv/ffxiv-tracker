@@ -34,6 +34,7 @@ const trialPack: ItemPack = new ItemPack('Trials', ItemType.Mount, [
   '192', // Innocent Gwiber
   '205', // Shadow Gwiber
   '217', // Ruby Gwiber
+  '226', // Gwiber Of Light
 ]);
 
 const raidMounts = new ItemPack('Raids', ItemType.Mount, [
@@ -47,6 +48,7 @@ const raidMounts = new ItemPack('Raids', ItemType.Mount, [
 ]);
 
 const questMounts = new ItemPack('Quests', ItemType.Mount, [
+  '230', // Ehll Tou
   '181', // Kamuy Of The Nine Tails
   '125', // Yol
   '105', // Firebird
@@ -61,6 +63,7 @@ const questMounts = new ItemPack('Quests', ItemType.Mount, [
 ]);
 
 const feastMounts = new ItemPack('Feasts', ItemType.Mount, [
+  '229', // 	Magitek Hyperconveyor
   '202', // Epimetheus
   '179', // Maxima Roader
   '176', // Magna Roader

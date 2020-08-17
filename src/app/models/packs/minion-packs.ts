@@ -10,6 +10,8 @@ const trialMinions = new ItemPack('Trials', ItemType.Minion, [
 ]);
 
 const raidMinions = new ItemPack('Raids', ItemType.Minion, [
+  '395', // 2P Automaton
+  '394', // 2B Automaton
   '332', // Wind-up Ryne
   '365', // Pod 316
   '364', // Pod 054
@@ -50,6 +52,7 @@ const fateMinions = new ItemPack('Fates', ItemType.Minion, [
 ]);
 
 const questMinions = new ItemPack('Quests', ItemType.Minion, [
+  '381', // Wind-up Mystel
   '306', // Wind-up G'raha Tia
   '342', // Giant Beaver
   '337', // The Great Serpent Of Ronka
@@ -78,6 +81,7 @@ const questMinions = new ItemPack('Quests', ItemType.Minion, [
 ]);
 
 const dungeonMinions = new ItemPack('Dungeons', ItemType.Minion, [
+  '385', // Ephemeral Necromancer
   '374', // Ancient One
   '361', // Little Leannan
   '349', // Shoebill
