@@ -199,6 +199,16 @@ const craftingMinions = new ItemPack('Crafting', ItemType.Minion, [
   '22', // Gravel Golem
 ]);
 
+const gatheringMinions = new ItemPack('Gathering', ItemType.Minion, [
+  '244', // Tiny Tatsunoko
+  '237', // Castaway Chocobo Chick
+  '188', // Magic Bucket
+  '38', // Coblyn Larva
+  '48', // Kidragora
+  '30', // Gigantpole
+  '24', // Tiny Tortoise
+]);
+
 export const MinionPacks: ItemPack[] = [
   allMinions,
   trialMinions,
@@ -208,5 +218,6 @@ export const MinionPacks: ItemPack[] = [
   questMinions,
   dungeonMinions,
   deepDungeonMinions,
-  craftingMinions
+  craftingMinions,
+  gatheringMinions
 ];
