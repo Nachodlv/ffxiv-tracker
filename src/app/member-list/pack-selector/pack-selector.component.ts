@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Observable} from 'rxjs';
-import {Item, ItemType} from '../../models/item';
+import {ItemType} from '../../models/item';
 import {ItemService} from '../../services/item-service/item.service';
 import {ItemPack} from '../../models/packs/item-pack';
 
@@ -36,7 +35,12 @@ export class PackSelectorComponent implements OnInit, OnChanges {
 
   checkboxClicked(packSelected: PackCheckBox): void {
     if (!packSelected.initialized) {
-      this.initializePack(packSelected);
+      if (packSelected.itemPack.ids.length > 0) {
+        this.initializePack(packSelected);
+      }
+      else {
+        this.initializeAllPack(packSelected);
+      }
     }
     this.packSelected = packSelected;
     this.packSelectedChange.emit(packSelected.itemPack);
@@ -50,6 +54,13 @@ export class PackSelectorComponent implements OnInit, OnChanges {
     pack.initialized = true;
   }
 
+  private initializeAllPack(pack: PackCheckBox): void {
+    pack.itemPack.items$ =
+      pack.itemPack.type === ItemType.Mount ?
+        this.itemService.getAllMounts() :
+        this.itemService.getAllMinions();
+    pack.initialized = true;
+  }
 
 }
 

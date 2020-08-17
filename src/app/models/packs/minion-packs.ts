@@ -1,6 +1,8 @@
 ﻿import {ItemPack} from './item-pack';
 import {ItemType} from '../item';
 
+const allMinions = new ItemPack('All', ItemType.Minion, []);
+
 const trialMinions = new ItemPack('Trials', ItemType.Minion, [
   '301', // Poogie
   '122', // Enkidu
@@ -163,5 +165,5 @@ const deepDungeonMinions: ItemPack = new ItemPack('Deep Dungeons', ItemType.Mini
 ]);
 
 export const MinionPacks: ItemPack[] = [
-  trialMinions, raidMinions, eurekaMinions, fateMinions, questMinions, dungeonMinions, deepDungeonMinions
+  allMinions, trialMinions, raidMinions, eurekaMinions, fateMinions, questMinions, dungeonMinions, deepDungeonMinions
 ];

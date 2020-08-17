@@ -1,6 +1,8 @@
 ﻿import {ItemPack} from './item-pack';
 import {ItemType} from '../item';
 
+const allMounts = new ItemPack('All', ItemType.Mount, []);
+
 const cylPack: ItemPack = new ItemPack('Cyl Pack', ItemType.Mount, [
   '186',
 ]);
@@ -79,5 +81,5 @@ const eurekaMounts = new ItemPack('Eureka', ItemType.Mount, [
 
 
 export const MountPacks: ItemPack [] = [
-  trialPack, raidMounts, eurekaMounts, questMounts, feastMounts
+  allMounts, trialPack, raidMounts, eurekaMounts, questMounts, feastMounts
 ];

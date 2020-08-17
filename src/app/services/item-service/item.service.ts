@@ -11,7 +11,7 @@ import {PaginationResult} from '../../models/pagination-result';
 })
 export class ItemService {
 
-  private allMountsUrl = 'mount?columns=ID,Name,IconSmall';
+  private allMountsUrl = 'search?indexes=Mount&filters=Order>=0&columns=ID,Name,IconSmall';
   private allMinionsUrl = 'Companion?columns=ID,Name,IconSmall';
 
   mounts = new LocalStorageSubject<Item[]>('mounts');
@@ -50,7 +50,7 @@ export class ItemService {
   private getAllItems(url: string, page: number = 1, items: Item[] = []): Observable<Item[]> {
     return this.ffxivHttpClientService.get(`${url}&page=${page}`).pipe(flatMap(response => {
       const itemPagination = PaginationResult.fromJson(response, new Item('', ''));
-      const newItems = [...items, ...itemPagination.results];
+      const newItems = [...items, ...itemPagination.results.filter(item => item.name)];
       if (itemPagination.pagination.page < itemPagination.pagination.pageTotal) {
         return this.getAllItems(url, page + 1, newItems);
       } else {

@@ -5,7 +5,11 @@ export class Item implements Model{
   }
 
   static fromJson(json: any): Item {
-    return new Item(json.IconSmall != null ? `https://xivapi.com${json.IconSmall}` : json.Icon, json.Name, json.ID + '');
+    return new Item(this.addUrl(json.IconSmall != null ? json.IconSmall : json.Icon), json.Name, json.ID + '');
+  }
+
+  private static addUrl(icon: string): string {
+    return icon.includes('https') ? icon : `https://xivapi.com${icon}`;
   }
 
   fromJson(json: any): Model {
