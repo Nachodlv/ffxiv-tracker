@@ -314,8 +314,29 @@ const purchaseMinions = new ItemPack('Purchase', ItemType.Minion, [
   '3', // Wayward Hatchling
 ]);
 
+const yoKaiWatchMinions = new ItemPack('Yo-kai Watch', ItemType.Minion, [
+  '393', // Damona
+  '392', // 	Zazel
+  '391', // Lord Ananta
+  '390', // Lord Enma
+  '213', // USApyon
+  '211', // Robonyan F-type
+  '210', // Hovernyan
+  '209', // Shogunyan
+  '208', // Venoct
+  '207', // Noko
+  '206', // Manjimutt
+  '205', // Komajiro
+  '204', // Kyubi
+  '203', // Blizzaria
+  '202', // Whisper
+  '201', // Komasan
+  '200', // Jibanyan
+]);
+
 export const MinionPacks: ItemPack[] = [
   allMinions,
+  yoKaiWatchMinions,
   trialMinions,
   raidMinions,
   eurekaMinions,
