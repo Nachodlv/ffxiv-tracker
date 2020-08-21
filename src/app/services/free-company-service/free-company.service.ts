@@ -26,8 +26,10 @@ export class FreeCompanyService {
     return this.freeCompanies.get(id, () => this.requestFreeCompanyById(id));
   }
 
-  searchFreeCompanyByName(name: string, page: number): Observable<PaginationResult<FreeCompany>> {
-    return this.freeCompaniesByName.get(`${name}/${page}`, () => this.requestFreeCompanyByName(name, page));
+  searchFreeCompanyByName(name: string, page: number, server?: string): Observable<PaginationResult<FreeCompany>> {
+    return this.freeCompaniesByName.get(
+      `${name}/${page}${server ? `/${server}` : ''}`,
+      () => this.requestFreeCompanyByName(name, page, server));
   }
 
   getCompanyMembers(id: string): Observable<Player[]> {
@@ -46,12 +48,13 @@ export class FreeCompanyService {
     }));
   }
 
-  private requestFreeCompanyByName(name: string, page: number): Observable<PaginationResult<FreeCompany>> {
-    return this.ffxivHttpClient.get(`${this.url}/search?name=${name}&page=${page}`).pipe(map(response => {
-      const pagination = PaginationResult.fromJson<FreeCompany>(response, new FreeCompany());
-      pagination.results.forEach(fc => this.freeCompanies.set(fc.id, fc));
-      return pagination;
-    }));
+  private requestFreeCompanyByName(name: string, page: number, server?: string): Observable<PaginationResult<FreeCompany>> {
+    return this.ffxivHttpClient.get(`${this.url}/search?name=${name}&page=${page}${server ? `&server=${server}` : ''}`).pipe(
+      map(response => {
+        const pagination = PaginationResult.fromJson<FreeCompany>(response, new FreeCompany());
+        pagination.results.forEach(fc => this.freeCompanies.set(fc.id, fc));
+        return pagination;
+      }));
   }
 }
 

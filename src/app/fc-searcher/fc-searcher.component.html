@@ -4,8 +4,14 @@
     <form (submit)="search()">
       <label for="search-input" id="search-input-label">Search your Free Company!</label>
       <div class="row ml-0">
-        <input id="search-input" class="col-8" type="text" value=""
+        <input id="search-input" class="col-auto" type="text" value=""
                placeholder="Free Company Name" [(ngModel)]="searchInput" name="searchInput">
+        <select class="col-auto ml-3" [(ngModel)] ='serverSelected' name="server-selection">
+          <option [defaultSelected]="true" [value]="undefined">All servers</option>
+          <optgroup *ngFor = 'let dataCenter of dataCenters$ | async' [label]="dataCenter.name">
+            <option *ngFor = 'let server of dataCenter.servers' [value]="server">{{server}}</option>
+          </optgroup>
+        </select>
         <button type="submit" class="btn btn-info ml-3 col-auto" [disabled]="!searchInput">Search</button>
       </div>
       <alert *ngIf="formError" type="danger" [dismissible]="true" (onClosed)="formError = ''">{{formError}}</alert>
