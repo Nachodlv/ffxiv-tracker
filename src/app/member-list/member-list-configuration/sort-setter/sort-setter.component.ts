@@ -28,12 +28,20 @@ export class SortSetterComponent implements OnInit, OnChanges {
   playerSortChanged(playerSort: string): void {
     const key = Object.keys(PlayerSort).find(k => PlayerSort[k].toString() === playerSort);
     this.sort.playerSort = (PlayerSort)[key];
-    this.sortChange.emit(this.sort);
   }
 
   itemSortChanged(itemSort: string): void {
     const key = Object.keys(ItemSort).find(k => ItemSort[k].toString() === itemSort);
     this.sort.itemSort = ItemSort[key];
+  }
+
+  playerAscendingChanged(newValue: boolean): void {
+    this.sort.playerAscending = newValue;
+    this.sortChange.emit(this.sort);
+  }
+
+  itemAscendingChanged(newValue: boolean): void {
+    this.sort.itemAscending = newValue;
     this.sortChange.emit(this.sort);
   }
 

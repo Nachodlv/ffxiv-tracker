@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Item} from '../../models/item';
 import {SearchItemsPipe} from '../../pipes/search-items.pipe';
+import {ItemSort, SortOrder} from '../../models/sort-order';
 
 @Component({
   selector: 'app-item-list',
@@ -13,6 +14,7 @@ export class ItemListComponent implements OnInit, OnChanges {
   @Input() items: Item[] = [];
   @Input() shouldFilter = false;
   @Input() searchInput: string;
+  @Input() sort: SortOrder;
 
   @Output() itemQuantity = new EventEmitter<number>();
 

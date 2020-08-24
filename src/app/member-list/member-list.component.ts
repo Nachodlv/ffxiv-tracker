@@ -119,7 +119,6 @@ export class MemberListComponent implements OnInit, OnDestroy {
     this.companyMembersSubscription?.unsubscribe();
   }
 
-
   private updateSort(): void {
     this.sortUpdater = !this.sortUpdater;
   }

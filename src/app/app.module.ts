@@ -27,6 +27,7 @@ import {SortSetterComponent} from './member-list/member-list-configuration/sort-
 import {RadioButtonRowComponent} from './member-list/member-list-configuration/sort-setter/radio-button-row/radio-button-row.component';
 import {PackSelectorComponent} from './member-list/member-list-configuration/pack-selector/pack-selector.component';
 import { RadioButtonBooleanComponent } from './member-list/member-list-configuration/sort-setter/radio-button-boolean/radio-button-boolean.component';
+import { SortItemsPipe } from './pipes/sort-items.pipe';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { RadioButtonBooleanComponent } from './member-list/member-list-configura
     SortPlayerPipe,
     MemberListConfigurationComponent,
     RadioButtonBooleanComponent,
+    SortItemsPipe,
   ],
   imports: [
     BrowserModule,

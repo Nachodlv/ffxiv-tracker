@@ -31,17 +31,17 @@
     <ng-container *ngIf="!packSelected">
       <app-item-list *ngIf="itemTypeSelected == itemType.Mount" [items]="extraInformation.mounts"
                      [shouldFilter]="!(player | searchPlayers : searchInput)" [searchInput]="searchInput"
-                     (itemQuantity)="changedItemQuantity($event, player.id)"></app-item-list>
+                     (itemQuantity)="changedItemQuantity($event, player.id)" [sort]="sort"></app-item-list>
       <app-item-list *ngIf="itemTypeSelected == itemType.Minion" [items]="extraInformation.minions"
                      [shouldFilter]="!(player | searchPlayers : searchInput)" [searchInput]="searchInput"
-                     (itemQuantity)="changedItemQuantity($event, player.id)"></app-item-list>
+                     (itemQuantity)="changedItemQuantity($event, player.id)" [sort]="sort"></app-item-list>
     </ng-container>
     <ng-container *ngIf="packSelected">
       <app-pack-list [packSelected]="packSelected"
                      [items]="itemTypeSelected == itemType.Mount ? extraInformation.mounts : extraInformation.minions"
                      [playerNameMatched]="player | searchPlayers : searchInput"
                      [searchInput]="searchInput"
-                     (packLength)="changePackLength($event, player.id)"></app-pack-list>
+                     (packLength)="changePackLength($event, player.id)" [sort]="sort"></app-pack-list>
     </ng-container>
   </ng-container>
 </div>

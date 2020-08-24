@@ -35,11 +35,13 @@ export class MemberListConfigurationComponent implements OnInit {
     this.itemTypeSelected = itemType;
     this.itemTypeChange.emit(itemType);
     this.changePackSelected(undefined);
+    this.sortChange.emit(this.sort);
   }
 
   changePackSelected(itemPack: ItemPack): void {
     this.packSelected = itemPack;
     this.packSelectedChange.emit(itemPack);
+    this.sortChange.emit(this.sort);
   }
 
   changeSort(sort: SortOrder): void {

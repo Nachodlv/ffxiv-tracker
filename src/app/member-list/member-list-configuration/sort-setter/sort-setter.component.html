@@ -10,7 +10,8 @@
                             name="player-sort"></app-radio-button-row>
     </div>
     <div class="separator">
-      <app-radio-button-boolean [(value)]="sort.playerAscending" [trueText]="ascending"
+      <app-radio-button-boolean [value]="sort.playerAscending" (valueChange)="playerAscendingChanged($event)"
+                                [trueText]="ascending"
                                 [falseText]="descending" [name]="'player-ascending'"></app-radio-button-boolean>
     </div>
 
@@ -21,7 +22,7 @@
     </div>
     <div class="row">
       <app-radio-button-boolean class="col-auto" [value]="sort.itemAscending"
-                                (valueChange)="sort.itemAscending = $event"
+                                (valueChange)="itemAscendingChanged($event)"
                                 [trueText]="ascending"
                                 [falseText]="descending" [name]="'item-ascending'"></app-radio-button-boolean>
     </div>
@@ -30,13 +31,17 @@
 
 <ng-template #ascending>
   <div class="row m-0">
-    <div class="col-auto p-0 arrow-icon"><ng-template *ngTemplateOutlet="arrowUp"></ng-template></div>
+    <div class="col-auto p-0 arrow-icon">
+      <ng-template *ngTemplateOutlet="arrowUp"></ng-template>
+    </div>
     <label class="col-auto p-0 mb-auto mt-auto">Ascending</label>
   </div>
 </ng-template>
 <ng-template #descending>
   <div class="row m-0">
-    <div class="col-auto p-0 arrow-icon"><ng-template *ngTemplateOutlet="arrowDown"></ng-template></div>
+    <div class="col-auto p-0 arrow-icon">
+      <ng-template *ngTemplateOutlet="arrowDown"></ng-template>
+    </div>
     <label class="col-auto p-0 mb-auto mt-auto">Descending</label>
   </div>
 </ng-template>

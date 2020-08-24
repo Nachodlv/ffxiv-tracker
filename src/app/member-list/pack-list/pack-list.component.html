@@ -1,5 +1,6 @@
 <div class="row">
-  <ng-container *ngFor="let item of (playerNameMatched ? packItems : itemsFiltered)">
+  <ng-container
+    *ngFor="let item of (playerNameMatched ? packItems : itemsFiltered) | sortItems : sort.itemSort : sort.itemAscending">
     <ng-container
       *ngIf="(playerNameMatched || itemsFiltered.length > 0)">
       <app-item-icon [item]="item" [mountAvailable]="item| hasItem: items"></app-item-icon>

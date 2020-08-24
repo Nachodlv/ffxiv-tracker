@@ -1,8 +1,8 @@
 export class SortOrder {
   public playerSort: PlayerSort = PlayerSort.Rank;
   public itemSort: ItemSort = ItemSort.Id;
-  public playerAscending = true;
-  public itemAscending = true;
+  public playerAscending = false;
+  public itemAscending = false;
 }
 
 export enum PlayerSort {

@@ -4,6 +4,7 @@ import {SearchItemsPipe} from '../../pipes/search-items.pipe';
 import {forkJoin, Subscription} from 'rxjs';
 import {ItemPack} from '../../models/packs/item-pack';
 import {HasItemPipe} from '../../pipes/has-item.pipe';
+import {SortOrder} from '../../models/sort-order';
 
 @Component({
   selector: 'app-pack-list',
@@ -17,6 +18,7 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() playerNameMatched = false;
   @Input() items: Item[] = [];
   @Input() searchInput: string;
+  @Input() sort: SortOrder;
 
   @Output() packLength = new EventEmitter<number>();
 

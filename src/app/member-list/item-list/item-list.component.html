@@ -1,6 +1,6 @@
 <div class="row">
   <ng-container
-    *ngFor="let item of (shouldFilter? itemFiltered : items)">
+    *ngFor="let item of (shouldFilter? itemFiltered : items) | sortItems : sort.itemSort : sort.itemAscending">
     <app-item-icon [item]="item"></app-item-icon>
   </ng-container>
 </div>
