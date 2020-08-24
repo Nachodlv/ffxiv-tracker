@@ -12,27 +12,29 @@ import {PlayerSearch} from '../member-list/member-list.component';
 export class SortPlayerPipe implements PipeTransform {
 
   transform(players: Player[], playerSort: PlayerSort, quantities: Map<string, PlayerSearch>, packSelected: boolean,
-            updateSort: boolean): Player[] {
+            ascending: boolean, updateSort: boolean): Player[] {
     switch (playerSort) {
       case PlayerSort.Rank:
-        return players.sort((a, b) => a.rank.order - b.rank.order);
+        return players.sort((a, b) => ascending ? b.rank.order - a.rank.order :  a.rank.order - b.rank.order);
       case PlayerSort.Name:
-        return players.sort((a, b) => a.name.localeCompare(b.name));
+        return players.sort((a, b) => ascending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
       case PlayerSort.Quantity:
-        return this.sortByQuantity(players, quantities, packSelected);
+        return this.sortByQuantity(players, quantities, packSelected, ascending);
     }
 
   }
 
-  private sortByQuantity(players: Player[], quantities: Map<string, PlayerSearch>, packSelected: boolean): Player[] {
+  private sortByQuantity(players: Player[], quantities: Map<string, PlayerSearch>, packSelected: boolean, ascending: boolean): Player[] {
     return players.sort((a, b) => {
       const aSearch = quantities.get(a.id);
       const bSearch = quantities.get(b.id);
+      let valueToReturn: number;
       if (packSelected) {
-        return bSearch.packLength - aSearch.packLength;
+        valueToReturn = bSearch.packLength - aSearch.packLength;
       } else {
-        return bSearch.itemLength - aSearch.itemLength;
+        valueToReturn = bSearch.itemLength - aSearch.itemLength;
       }
+      return valueToReturn * (ascending ? -1 : 1);
     });
   }
 

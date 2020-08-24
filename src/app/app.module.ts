@@ -6,7 +6,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {MemberListComponent} from './member-list/member-list.component';
 import {FormsModule} from '@angular/forms';
-import {PackSelectorComponent} from './member-list/pack-selector/pack-selector.component';
 import {SearchPlayersPipe} from './pipes/search-players.pipe';
 import {ProgressbarModule} from 'ngx-bootstrap/progressbar';
 import {NgxSpinnerModule} from 'ngx-spinner';
@@ -22,10 +21,12 @@ import {PaginationModule} from 'ngx-bootstrap/pagination';
 import { FcCardComponent } from './fc-searcher/fc-card/fc-card.component';
 import { FcCrestComponent } from './fc-searcher/fc-card/fc-crest/fc-crest.component';
 import { FooterComponent } from './footer/footer.component';
-import { SortSetterComponent } from './member-list/sort-setter/sort-setter.component';
-import { RadioButtonRowComponent } from './member-list/sort-setter/radio-button-row/radio-button-row.component';
 import { SortPlayerPipe } from './pipes/sort-player.pipe';
 import { MemberListConfigurationComponent } from './member-list/member-list-configuration/member-list-configuration.component';
+import {SortSetterComponent} from './member-list/member-list-configuration/sort-setter/sort-setter.component';
+import {RadioButtonRowComponent} from './member-list/member-list-configuration/sort-setter/radio-button-row/radio-button-row.component';
+import {PackSelectorComponent} from './member-list/member-list-configuration/pack-selector/pack-selector.component';
+import { RadioButtonBooleanComponent } from './member-list/member-list-configuration/sort-setter/radio-button-boolean/radio-button-boolean.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { MemberListConfigurationComponent } from './member-list/member-list-conf
     RadioButtonRowComponent,
     SortPlayerPipe,
     MemberListConfigurationComponent,
+    RadioButtonBooleanComponent,
   ],
   imports: [
     BrowserModule,

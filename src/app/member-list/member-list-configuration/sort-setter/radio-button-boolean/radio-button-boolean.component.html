@@ -1,0 +1,16 @@
+<div class="row m-0">
+  <div class="form-check col-auto radio-input">
+    <input id="true" class="form-check-input mt-auto mb-auto" type="radio" [ngModel]="value"
+           (ngModelChange)="valueChanged($event)" [value]="true" [name]="name">
+    <div class="form-check-label">
+      <ng-template *ngTemplateOutlet="trueText"></ng-template>
+    </div>
+  </div>
+  <div class="form-check col-auto radio-input">
+    <input id="false" class="form-check-input mt-auto mb-auto" type="radio" [ngModel]="value"
+           (ngModelChange)="valueChanged($event)" [value]="false" [name]="name">
+    <div class="form-check-label">
+      <ng-template *ngTemplateOutlet="falseText"></ng-template>
+    </div>
+  </div>
+</div>

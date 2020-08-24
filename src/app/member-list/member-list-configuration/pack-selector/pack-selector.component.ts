@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {ItemType} from '../../models/item';
-import {ItemService} from '../../services/item-service/item.service';
-import {ItemPack} from '../../models/packs/item-pack';
+import {ItemPack} from '../../../models/packs/item-pack';
+import {ItemService} from '../../../services/item-service/item.service';
+import {ItemType} from '../../../models/item';
 
 @Component({
   selector: 'app-pack-selector',

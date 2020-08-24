@@ -1,0 +1,60 @@
+<div class="mt-2 mb-2">
+  <button type="button" class="btn btn-info btn-sm"
+          (click)="toggleSortConfig()">{{showSortConfig ? 'Hide sorting configuration' : 'Change sorting'}}</button>
+  <div class="mt-2 col-sm-6" *ngIf="showSortConfig" id="sort-container">
+    <div class="row">
+      <label class="col-auto">Sort <b>player</b>: </label>
+      <app-radio-button-row class="col-auto" [elements]="playerSortValues"
+                            [elementSelected]="sort.playerSort.toString()"
+                            (elementSelectedChange)="playerSortChanged($event)"
+                            name="player-sort"></app-radio-button-row>
+    </div>
+    <div class="separator">
+      <app-radio-button-boolean [(value)]="sort.playerAscending" [trueText]="ascending"
+                                [falseText]="descending" [name]="'player-ascending'"></app-radio-button-boolean>
+    </div>
+
+    <div class="row">
+      <label class="col-auto">Sort <b>items</b>: </label>
+      <app-radio-button-row class="col-auto" [elements]="itemSortValues" [elementSelected]="sort.itemSort.toString()"
+                            (elementSelectedChange)="itemSortChanged($event)" name="item-sort"></app-radio-button-row>
+    </div>
+    <div class="row">
+      <app-radio-button-boolean class="col-auto" [value]="sort.itemAscending"
+                                (valueChange)="sort.itemAscending = $event"
+                                [trueText]="ascending"
+                                [falseText]="descending" [name]="'item-ascending'"></app-radio-button-boolean>
+    </div>
+  </div>
+</div>
+
+<ng-template #ascending>
+  <div class="row m-0">
+    <div class="col-auto p-0 arrow-icon"><ng-template *ngTemplateOutlet="arrowUp"></ng-template></div>
+    <label class="col-auto p-0 mb-auto mt-auto">Ascending</label>
+  </div>
+</ng-template>
+<ng-template #descending>
+  <div class="row m-0">
+    <div class="col-auto p-0 arrow-icon"><ng-template *ngTemplateOutlet="arrowDown"></ng-template></div>
+    <label class="col-auto p-0 mb-auto mt-auto">Descending</label>
+  </div>
+</ng-template>
+
+<ng-template #arrowUp>
+  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-up" fill="currentColor"
+       xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+    <path fill-rule="evenodd"
+          d="M7.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8 3.707 5.354 6.354a.5.5 0 1 1-.708-.708l3-3z"/>
+  </svg>
+</ng-template>
+
+<ng-template #arrowDown>
+  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-down" fill="currentColor"
+       xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd"
+          d="M4.646 9.646a.5.5 0 0 1 .708 0L8 12.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
+    <path fill-rule="evenodd" d="M8 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
+  </svg>
+</ng-template>

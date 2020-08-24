@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {ItemSort, PlayerSort, SortOrder} from '../../models/sort-order';
+import {ItemSort, PlayerSort, SortOrder} from '../../../models/sort-order';
 
 @Component({
   selector: 'app-sort-setter',

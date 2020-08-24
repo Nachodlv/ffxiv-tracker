@@ -14,7 +14,7 @@
   </div>
 </div>
 <div class="col-12"
-     *ngFor="let player  of players | sortPlayer: sort.playerSort : playerSearch : packSelected != undefined : sortUpdater"
+     *ngFor="let player  of players | sortPlayer: sort.playerSort : playerSearch : packSelected != undefined : sort.playerAscending : sortUpdater"
      id="member-list">
   <ng-container *ngIf="player.extraInformation$ && player.extraInformation$ | async as extraInformation">
     <div class="row"
