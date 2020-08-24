@@ -14,26 +14,24 @@ export class ItemListComponent implements OnInit, OnChanges {
   @Input() shouldFilter = false;
   @Input() searchInput: string;
 
-  @Output() isEmpty = new EventEmitter<boolean>();
+  @Output() itemQuantity = new EventEmitter<number>();
 
-  itemFiltered: Item[];
+  itemFiltered: Item[] = [];
 
   constructor(private searchItemsPipe: SearchItemsPipe) {
   }
 
   ngOnInit(): void {
-    if (this.itemFiltered && this.itemFiltered.length === 0) {
-      this.isEmpty.emit(true);
-    }
+    this.itemQuantity.emit(this.itemFiltered.length);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const change = changes.searchInput;
-    if (!this.shouldFilter || !change || change.previousValue === change.currentValue ) {
+    if (!change || change.previousValue === change.currentValue ) {
       return;
     }
-    this.itemFiltered = this.searchItemsPipe.transform(this.items, change.currentValue);
-    this.isEmpty.emit(this.itemFiltered.length === 0);
+    this.itemFiltered = this.shouldFilter ? this.searchItemsPipe.transform(this.items, change.currentValue) : this.items;
+    this.itemQuantity.emit(this.itemFiltered.length);
   }
 
 }

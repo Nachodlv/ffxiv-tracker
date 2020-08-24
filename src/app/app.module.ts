@@ -22,6 +22,10 @@ import {PaginationModule} from 'ngx-bootstrap/pagination';
 import { FcCardComponent } from './fc-searcher/fc-card/fc-card.component';
 import { FcCrestComponent } from './fc-searcher/fc-card/fc-crest/fc-crest.component';
 import { FooterComponent } from './footer/footer.component';
+import { SortSetterComponent } from './member-list/sort-setter/sort-setter.component';
+import { RadioButtonRowComponent } from './member-list/sort-setter/radio-button-row/radio-button-row.component';
+import { SortPlayerPipe } from './pipes/sort-player.pipe';
+import { MemberListConfigurationComponent } from './member-list/member-list-configuration/member-list-configuration.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +42,10 @@ import { FooterComponent } from './footer/footer.component';
     FcCardComponent,
     FcCrestComponent,
     FooterComponent,
+    SortSetterComponent,
+    RadioButtonRowComponent,
+    SortPlayerPipe,
+    MemberListConfigurationComponent,
   ],
   imports: [
     BrowserModule,

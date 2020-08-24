@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="form-check col-auto" *ngFor="let element of elements">
+    <input [id]="element" class="form-check-input" type="radio" [ngModel]="elementSelected"
+           (ngModelChange)="selectElement($event)" [value]="element" [name]="name">
+    <label class="form-check-label" [for]="element">
+      {{element}}
+    </label>
+  </div>
+</div>

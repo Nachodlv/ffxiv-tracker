@@ -12,6 +12,7 @@ import {MountPacks} from '../models/packs/mount-packs';
 import {ItemPack} from '../models/packs/item-pack';
 import {MinionPacks} from '../models/packs/minion-packs';
 import {ItemService} from '../services/item-service/item.service';
+import {SortOrder} from '../models/sort-order';
 
 @Component({
   selector: 'app-member-list',
@@ -26,13 +27,13 @@ export class MemberListComponent implements OnInit, OnDestroy {
   itemTypeSelected: ItemType = ItemType.Mount;
   itemType = ItemType;
   searchInput = '';
-  mountsPacks: ItemPack[] = [];
-  minionsPacks: ItemPack[] = [];
   totalPlayers = 0;
   playersLoaded = 0;
+  sort: SortOrder = new SortOrder();
+  playerSearch = new Map<string, PlayerSearch>();
+  sortUpdater: boolean;
 
   private playersInitialized = 0;
-  private playerSearch = new Map<string, PlayerSearch>();
   private paramsSubscription: Subscription;
   private playerSubscriptions: Subscription[] = [];
   private companyMembersSubscription: Subscription;
@@ -44,8 +45,6 @@ export class MemberListComponent implements OnInit, OnDestroy {
               private changeDetector: ChangeDetectorRef,
               private activatedRoute: ActivatedRoute,
               private router: Router) {
-    this.mountsPacks = MountPacks;
-    this.minionsPacks = MinionPacks;
   }
 
   ngOnInit(): void {
@@ -77,11 +76,6 @@ export class MemberListComponent implements OnInit, OnDestroy {
     });
   }
 
-  changeItemType(itemType: ItemType): void {
-    this.itemTypeSelected = itemType;
-    this.packSelected = undefined;
-  }
-
   getPlayerSearch(playerId: string): PlayerSearch {
     if (this.playerSearch.has(playerId)) {
       return this.playerSearch.get(playerId);
@@ -89,13 +83,15 @@ export class MemberListComponent implements OnInit, OnDestroy {
     return new PlayerSearch();
   }
 
-  setEmptyItems(value: boolean, playerId: string): void {
-    this.playerSearch.get(playerId).emptyItems = value;
+  changedItemQuantity(value: number, playerId: string): void {
+    this.playerSearch.get(playerId).itemLength = value;
+    this.updateSort();
     this.changeDetector.detectChanges();
   }
 
-  setEmptyPack(value: boolean, playerId: string): void {
-    this.playerSearch.get(playerId).emptyPack = value;
+  changePackLength(value: number, playerId: string): void {
+    this.playerSearch.get(playerId).packLength = value;
+    this.updateSort();
     this.changeDetector.detectChanges();
   }
 
@@ -106,6 +102,8 @@ export class MemberListComponent implements OnInit, OnDestroy {
     for (let i = currentInitialized; i < Math.min(currentInitialized + playersToInitialize, players.length); i++) {
       players[i].extraInformation$ = this.characterService.getPlayerExtraInformation(players[i].id);
       this.playerSubscriptions.push(players[i].extraInformation$.subscribe((info) => {
+          const playerSearch = this.playerSearch.get(players[i].id);
+          playerSearch.itemLength = info.mounts.length;
           this.playersLoaded++;
           if (this.playersInitialized < players.length) {
             this.initializePlayers(players);
@@ -121,9 +119,22 @@ export class MemberListComponent implements OnInit, OnDestroy {
     this.companyMembersSubscription?.unsubscribe();
   }
 
+
+  private updateSort(): void {
+    this.sortUpdater = !this.sortUpdater;
+  }
+
 }
 
-class PlayerSearch {
-  constructor(public emptyPack: boolean = true, public emptyItems: boolean = true) {
+export class PlayerSearch {
+  constructor(public packLength: number = 0, public itemLength: number = 0) {
+  }
+
+  get emptyPack(): boolean {
+    return this.packLength === 0;
+  }
+
+  get emptyItems(): boolean {
+    return this.itemLength === 0;
   }
 }

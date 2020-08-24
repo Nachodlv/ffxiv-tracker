@@ -1,29 +1,10 @@
 <h4 class="ml-4 mt-2">FFXIV Tracker</h4>
 <h5 id="fc-name" class="ml-4 mt-1" *ngIf="freeCompany$ | async as freeCompany">{{freeCompany.name}}</h5>
 <button type="button" class="btn btn-info btn-sm ml-4 mt-2" [routerLink]="'/'">Search another FC</button>
-<div id="settings-container">
-  <input id="search-input" [(ngModel)]="searchInput" class="col-sm-6" type="text" value=""
-         [placeholder]="'Search by Name or ' + (itemTypeSelected == itemType.Mount ? 'Mount' : 'Minion')  + '...'">
-  <div class="row m-0" id="item-type">
-    <div class="form-check col-auto" id="mount-type">
-      <input type="radio" name="item-type" id="mount" [value]="itemType.Mount" checked [ngModel]="itemTypeSelected"
-             (ngModelChange)="changeItemType($event)">
-      <label class="form-check-label" for="mount">
-        Mounts
-      </label>
-    </div>
-    <div class="form-check col-auto">
-      <input type="radio" name="item-type" id="minion" [value]="itemType.Minion" [ngModel]="itemTypeSelected"
-             (ngModelChange)="changeItemType($event)">
-      <label class="form-check-label" for="minion">
-        Minions
-      </label>
-    </div>
-  </div>
-  <app-pack-selector (packSelectedChange)="packSelected = $event"
-                     [packs]="itemTypeSelected == itemType.Mount ? mountsPacks: minionsPacks"></app-pack-selector>
-</div>
 
+<app-member-list-configuration (searchInputChange)="searchInput = $event" (itemTypeChange)="itemTypeSelected = $event"
+                               (packSelectedChange)="packSelected = $event"
+                               (sortChange)="sort = $event"></app-member-list-configuration>
 
 <div *ngIf="totalPlayers > 0 && totalPlayers != playersLoaded" class="col-sm-4">
   <div class="ml-1 mb-2">
@@ -32,35 +13,35 @@
                  [animate]="true">{{playersLoaded}} / {{totalPlayers}}</progressbar>
   </div>
 </div>
-<div class="col-12" *ngFor="let player  of players" id="member-list">
+<div class="col-12"
+     *ngFor="let player  of players | sortPlayer: sort.playerSort : playerSearch : packSelected != undefined : sortUpdater"
+     id="member-list">
   <ng-container *ngIf="player.extraInformation$ && player.extraInformation$ | async as extraInformation">
-    <div class="row">
-      <div class="player-name col-auto"
-           *ngIf="(player | searchPlayers : searchInput) || (!this.packSelected && !getPlayerSearch(player.id).emptyItems) || (this.packSelected && !getPlayerSearch(player.id).emptyPack)">
+    <div class="row"
+         *ngIf="(player | searchPlayers : searchInput) || (!this.packSelected && !getPlayerSearch(player.id).emptyItems) || (this.packSelected && !getPlayerSearch(player.id).emptyPack)">
+      <div class="player-name col-auto">
         {{player.name}}
       </div>
-      <div *ngIf="itemTypeSelected==itemType.Mount && extraInformation.mounts.length > 0" class="item-quantity col-auto" [tooltip]="extraInformation.mounts.length + ' mounts'">
-        {{extraInformation.mounts.length}}
-      </div>
-      <div *ngIf="itemTypeSelected==itemType.Minion && extraInformation.minions.length > 0" class="item-quantity col-auto" [tooltip]="extraInformation.minions.length + ' minions'">
-        {{extraInformation.minions.length}}
+      <div class="item-quantity col-auto"
+           [tooltip]="itemTypeSelected == itemType.Mount ? extraInformation.mounts.length + ' mounts' : extraInformation.minions.length + ' minions'">
+        {{packSelected == undefined ? getPlayerSearch(player.id).itemLength : getPlayerSearch(player.id).packLength}}
       </div>
     </div>
 
     <ng-container *ngIf="!packSelected">
       <app-item-list *ngIf="itemTypeSelected == itemType.Mount" [items]="extraInformation.mounts"
                      [shouldFilter]="!(player | searchPlayers : searchInput)" [searchInput]="searchInput"
-                     (isEmpty)="setEmptyItems($event, player.id)"></app-item-list>
+                     (itemQuantity)="changedItemQuantity($event, player.id)"></app-item-list>
       <app-item-list *ngIf="itemTypeSelected == itemType.Minion" [items]="extraInformation.minions"
                      [shouldFilter]="!(player | searchPlayers : searchInput)" [searchInput]="searchInput"
-                     (isEmpty)="setEmptyItems($event, player.id)"></app-item-list>
+                     (itemQuantity)="changedItemQuantity($event, player.id)"></app-item-list>
     </ng-container>
     <ng-container *ngIf="packSelected">
       <app-pack-list [packSelected]="packSelected"
                      [items]="itemTypeSelected == itemType.Mount ? extraInformation.mounts : extraInformation.minions"
                      [playerNameMatched]="player | searchPlayers : searchInput"
                      [searchInput]="searchInput"
-                     (isEmpty)="setEmptyPack($event, player.id)"></app-pack-list>
+                     (packLength)="changePackLength($event, player.id)"></app-pack-list>
     </ng-container>
   </ng-container>
 </div>

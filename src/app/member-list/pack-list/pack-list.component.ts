@@ -3,12 +3,13 @@ import {Item} from '../../models/item';
 import {SearchItemsPipe} from '../../pipes/search-items.pipe';
 import {forkJoin, Subscription} from 'rxjs';
 import {ItemPack} from '../../models/packs/item-pack';
+import {HasItemPipe} from '../../pipes/has-item.pipe';
 
 @Component({
   selector: 'app-pack-list',
   templateUrl: './pack-list.component.html',
   styleUrls: ['./pack-list.component.scss'],
-  providers: [SearchItemsPipe]
+  providers: [SearchItemsPipe, HasItemPipe]
 })
 export class PackListComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -17,7 +18,7 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() items: Item[] = [];
   @Input() searchInput: string;
 
-  @Output() isEmpty = new EventEmitter<boolean>();
+  @Output() packLength = new EventEmitter<number>();
 
   itemsFiltered: Item[] = [];
   loaded = false;
@@ -25,7 +26,7 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
 
   private subscription: Subscription;
 
-  constructor(private searchItemsPipe: SearchItemsPipe) {
+  constructor(private searchItemsPipe: SearchItemsPipe, private hasItemsPipe: HasItemPipe) {
   }
 
   ngOnInit(): void {
@@ -44,24 +45,22 @@ export class PackListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 
   private searchInputChanged(newSearchInput: string): void {
-    if (this.playerNameMatched) {
-      return;
-    }
-    this.itemsFiltered = this.searchItemsPipe.transform(this.packItems, newSearchInput);
-    this.isEmpty.emit(this.itemsFiltered.length === 0);
+    this.itemsFiltered = this.playerNameMatched ?
+      this.packItems :
+      this.searchItemsPipe.transform(this.packItems, newSearchInput);
+    this.itemsFiltered = this.itemsFiltered.filter(item => this.hasItemsPipe.transform(item, this.items));
+    this.packLength.emit(this.itemsFiltered.length);
   }
 
   private packSelectedChange(newPack: ItemPack): void {
     this.loaded = false;
     this.packItems = [];
 
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription?.unsubscribe();
     this.subscription = newPack.items$.subscribe(items => {
       this.packItems = items;
       this.loaded = true;

@@ -38,7 +38,7 @@ export class FreeCompanyService {
 
   private requestCompanyMember(id: string): Observable<Players> {
     return this.ffxivHttpClient.get(`${this.url}/${id}?${this.membersUrl}`).pipe(map((response: any) => {
-      return new Players(response.FreeCompanyMembers.map(member => Player.fromJson(member)));
+      return new Players(response.FreeCompanyMembers.map((member, index) => Player.fromJson(member, index)));
     }));
   }
 

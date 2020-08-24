@@ -1,0 +1,24 @@
+<div id="settings-container">
+  <input id="search-input" [ngModel]="searchInput" (ngModelChange)="changeSearchInput($event)" class="col-sm-6"
+         type="text" value=""
+         [placeholder]="'Search by Name or ' + (itemTypeSelected == itemType.Mount ? 'Mount' : 'Minion')  + '...'">
+  <app-sort-setter [sort]="sort" (sortChange)="changeSort($event)"></app-sort-setter>
+  <div class="row m-0" id="item-type">
+    <div class="form-check col-auto" id="mount-type">
+      <input type="radio" name="item-type" id="mount" [value]="itemType.Mount" checked [ngModel]="itemTypeSelected"
+             (ngModelChange)="changeItemType($event)">
+      <label class="form-check-label" for="mount">
+        Mounts
+      </label>
+    </div>
+    <div class="form-check col-auto">
+      <input type="radio" name="item-type" id="minion" [value]="itemType.Minion" [ngModel]="itemTypeSelected"
+             (ngModelChange)="changeItemType($event)">
+      <label class="form-check-label" for="minion">
+        Minions
+      </label>
+    </div>
+  </div>
+  <app-pack-selector (packSelectedChange)="changePackSelected($event)"
+                     [packs]="itemTypeSelected == itemType.Mount ? mountsPacks: minionsPacks"></app-pack-selector>
+</div>
