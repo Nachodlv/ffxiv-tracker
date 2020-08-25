@@ -82,7 +82,12 @@ const eurekaMounts = new ItemPack('Eureka', ItemType.Mount, [
   '186', // Ozma
 ]);
 
+const yoKaiWatchMounts = new ItemPack('Yo-kai Watch', ItemType.Mount, [
+  '228', // Jibanyan Couch
+  '94', // Whisper A-go-go
+  '87', // Whisper-go
+]);
 
 export const MountPacks: ItemPack [] = [
-  allMounts, trialPack, raidMounts, eurekaMounts, questMounts, feastMounts
+  allMounts, yoKaiWatchMounts, trialPack, raidMounts, eurekaMounts, questMounts, feastMounts
 ];
