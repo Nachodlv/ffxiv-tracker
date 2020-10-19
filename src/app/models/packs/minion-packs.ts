@@ -334,6 +334,15 @@ const yoKaiWatchMinions = new ItemPack('Yo-kai Watch', ItemType.Minion, [
   '200', // Jibanyan
 ]);
 
+const bozjaMinions = new ItemPack('Bozja', ItemType.Minion, [
+  '389', // Dáinsleif F1,
+  '383', // Magitek Helldiver F1,
+  '321', // Wind-up Weapon,
+  '329', // Abroader Otter,
+  '278', // Private Moai,
+  '271', // Koala Joey,
+]);
+
 export const MinionPacks: ItemPack[] = [
   allMinions,
   yoKaiWatchMinions,
@@ -346,5 +355,6 @@ export const MinionPacks: ItemPack[] = [
   deepDungeonMinions,
   craftingMinions,
   gatheringMinions,
-  purchaseMinions
+  purchaseMinions,
+  bozjaMinions
 ];

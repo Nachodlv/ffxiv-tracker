@@ -88,6 +88,11 @@ const yoKaiWatchMounts = new ItemPack('Yo-kai Watch', ItemType.Mount, [
   '87', // Whisper-go
 ]);
 
+const bozjaMounts = new ItemPack('Bozja', ItemType.Mount, [
+  '224', // Gabriel A
+  '213', // Construct 14
+]);
+
 export const MountPacks: ItemPack [] = [
-  allMounts, yoKaiWatchMounts, trialPack, raidMounts, eurekaMounts, questMounts, feastMounts
+  allMounts, yoKaiWatchMounts, trialPack, raidMounts, eurekaMounts, questMounts, feastMounts, bozjaMounts
 ];
