@@ -102,5 +102,5 @@ const bozjaMounts = new ItemPack('Bozja', ItemType.Mount, [
 ]);
 
 export const MountPacks: ItemPack [] = [
-  allMounts, yoKaiWatchMounts, trialPack, raidMounts, eurekaMounts, questMounts, feastMounts, bozjaMounts
+  allMounts, trialPack, raidMounts, eurekaMounts, questMounts, feastMounts, bozjaMounts
 ];

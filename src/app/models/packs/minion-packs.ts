@@ -377,7 +377,6 @@ const bozjaMinions = new ItemPack('Bozja', ItemType.Minion, [
 
 export const MinionPacks: ItemPack[] = [
   allMinions,
-  yoKaiWatchMinions,
   trialMinions,
   raidMinions,
   eurekaMinions,
