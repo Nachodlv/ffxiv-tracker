@@ -35,9 +35,12 @@ const trialPack: ItemPack = new ItemPack('Trials', ItemType.Mount, [
   '205', // Shadow Gwiber
   '217', // Ruby Gwiber
   '226', // Gwiber Of Light
+  '238', // Emerald Gwiber
+  '249', // Diamond Gwiber
 ]);
 
 const raidMounts = new ItemPack('Raids', ItemType.Mount, [
+  '234', // Eden
   '219', // Ramuh
   '188', // Skyslipper
   '173', // Model O
@@ -48,6 +51,8 @@ const raidMounts = new ItemPack('Raids', ItemType.Mount, [
 ]);
 
 const questMounts = new ItemPack('Quests', ItemType.Mount, [
+  '254', // Magicked Card
+  '245', // Landerwaffe
   '230', // Ehll Tou
   '181', // Kamuy Of The Nine Tails
   '125', // Yol
@@ -63,7 +68,8 @@ const questMounts = new ItemPack('Quests', ItemType.Mount, [
 ]);
 
 const feastMounts = new ItemPack('Feasts', ItemType.Mount, [
-  '229', // 	Magitek Hyperconveyor
+  '239', // Prototype Roader
+  '229', // Magitek Hyperconveyor
   '202', // Epimetheus
   '179', // Maxima Roader
   '176', // Magna Roader
@@ -89,6 +95,8 @@ const yoKaiWatchMounts = new ItemPack('Yo-kai Watch', ItemType.Mount, [
 ]);
 
 const bozjaMounts = new ItemPack('Bozja', ItemType.Mount, [
+  '241', // Gabriel Mark III
+  '212', // Deinonychus
   '224', // Gabriel A
   '213', // Construct 14
 ]);

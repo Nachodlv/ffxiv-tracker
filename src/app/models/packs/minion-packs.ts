@@ -10,6 +10,9 @@ const trialMinions = new ItemPack('Trials', ItemType.Minion, [
 ]);
 
 const raidMinions = new ItemPack('Raids', ItemType.Minion, [
+  '419', // 9S Automaton
+  '415', // Smaller Stubby
+  '398', // Wind-up Gaia
   '395', // 2P Automaton
   '394', // 2B Automaton
   '332', // Wind-up Ryne
@@ -44,6 +47,14 @@ const eurekaMinions = new ItemPack('Eureka', ItemType.Minion, [
 ]);
 
 const fateMinions = new ItemPack('Fates', ItemType.Minion, [
+  '377', // Amaro Hatchling
+  '368', // Little Leafman
+  '346', // Tinker's Bell
+  '351', // Ironfrog Ambler
+  '350', // Butterfly Effect
+  '338', // Micro Gigantender
+  '274', // Wind-up Ixion
+  '242', // Fox Kit
   '154', // Gold Rush Minecart
   '34', // Smallshell
   '31', // Pudgy Puk
@@ -81,6 +92,8 @@ const questMinions = new ItemPack('Quests', ItemType.Minion, [
 ]);
 
 const dungeonMinions = new ItemPack('Dungeons', ItemType.Minion, [
+  '411', // Magitek Predator F1
+  '405', // Drippy
   '385', // Ephemeral Necromancer
   '374', // Ancient One
   '361', // Little Leannan
@@ -126,6 +139,7 @@ const dungeonMinions = new ItemPack('Dungeons', ItemType.Minion, [
 ]);
 
 const deepDungeonMinions: ItemPack = new ItemPack('Deep Dungeons', ItemType.Minion, [
+  '292', // Frilled Dragon
   '265', // Wind-up Ravana
   '262', // Wind-up Lakshmi
   '261', // Wind-up Susano
@@ -169,6 +183,7 @@ const deepDungeonMinions: ItemPack = new ItemPack('Deep Dungeons', ItemType.Mini
 ]);
 
 const craftingMinions = new ItemPack('Crafting', ItemType.Minion, [
+  '414', // Wanderer's Campfire
   '327', // Seitei
   '303', // Scarlet Peacock
   '294', // Wind-up Sadu
@@ -335,12 +350,29 @@ const yoKaiWatchMinions = new ItemPack('Yo-kai Watch', ItemType.Minion, [
 ]);
 
 const bozjaMinions = new ItemPack('Bozja', ItemType.Minion, [
+  '418', // Wind-up Gunnhildr,
+  '404', // Save The Princess,
   '389', // Dáinsleif F1,
   '383', // Magitek Helldiver F1,
+  '348', // Sharksucker-class Insubmersible,
+  '334', // Chameleon,
   '321', // Wind-up Weapon,
   '329', // Abroader Otter,
+  '303', // Scarlet Peacock,
+  '312', // Mudpie,
+  '290', // Monkey King,
   '278', // Private Moai,
+  '387', // Sand Fox,
+  '284', // Byakko Cub,
+  '283', // Aurelia Polyp,
+  '279', // White Whittret,
+  '268', // Tengu Doll,
+  '275', // Wind-up Shinryu,
+  '265', // Wind-up Ravana,
+  '273', // Axolotl Eft,
+  '272', // Salt & Pepper Seal,
   '271', // Koala Joey,
+  '267', // Mameshiba,
 ]);
 
 export const MinionPacks: ItemPack[] = [
