@@ -11,7 +11,7 @@ import {PaginationResult} from '../../models/pagination-result';
 })
 export class ItemService {
 
-  private allMountsUrl = 'search?indexes=Mount&filters=Order>=0&columns=ID,Name,IconSmall,UrlType';
+  private allMountsUrl = 'Mount?columns=ID,Name,IconSmall,UrlType';
   private allMinionsUrl = 'Companion?columns=ID,Name,IconSmall,UrlType';
 
   mounts = new LocalStorageSubject<Item[]>('mounts');

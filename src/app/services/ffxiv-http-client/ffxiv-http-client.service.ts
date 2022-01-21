@@ -9,7 +9,7 @@ import {catchError, concatMap, delay, map, retry, retryWhen, switchMap, tap} fro
 export class FfxivHttpClientService {
 
   baseUrl = 'https://xivapi.com/';
-  timeBetweenRequests = 75;
+  timeBetweenRequests = 5000;
   currentRequests = -1;
   lastRequest = 0;
 

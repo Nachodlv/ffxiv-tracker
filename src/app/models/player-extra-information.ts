@@ -6,8 +6,8 @@ export class PlayerExtraInformation {
 
   public static fromJson(json: any): PlayerExtraInformation {
     return new PlayerExtraInformation(
-      json.Mounts.map(mount => Item.fromJson(mount, ItemType.Mount)),
-      json.Minions.map(minion => Item.fromJson(minion, ItemType.Minion)));
+      json.Mounts ? json.Mounts.map(mount => Item.fromJson(mount, ItemType.Mount)) : [],
+      json.Minions ? json.Minions.map(minion => Item.fromJson(minion, ItemType.Minion)) : []);
   }
 }
 
