@@ -37,9 +37,13 @@ const trialPack: ItemPack = new ItemPack('Trials', ItemType.Mount, [
   '226', // Gwiber Of Light
   '238', // Emerald Gwiber
   '249', // Diamond Gwiber
+  '261', // Lynx Of Eternal Darkness
+  '262', // Lynx Of Divine Light
+  '293', // Bluefeather Lynx
 ]);
 
 const raidMounts = new ItemPack('Raids', ItemType.Mount, [
+  '265', // Demi-Phoinix
   '234', // Eden
   '219', // Ramuh
   '188', // Skyslipper
@@ -51,6 +55,7 @@ const raidMounts = new ItemPack('Raids', ItemType.Mount, [
 ]);
 
 const questMounts = new ItemPack('Quests', ItemType.Mount, [
+  '263', // Argos
   '254', // Magicked Card
   '245', // Landerwaffe
   '230', // Ehll Tou
@@ -68,6 +73,7 @@ const questMounts = new ItemPack('Quests', ItemType.Mount, [
 ]);
 
 const feastMounts = new ItemPack('Feasts', ItemType.Mount, [
+  '264', // Dreadnaught
   '239', // Prototype Roader
   '229', // Magitek Hyperconveyor
   '202', // Epimetheus
@@ -101,6 +107,12 @@ const bozjaMounts = new ItemPack('Bozja', ItemType.Mount, [
   '213', // Construct 14
 ]);
 
+const fateMounts = new ItemPack('Fate', ItemType.Mount, [
+  '268', // Level Checker
+  '191', // Ironfrog Mover
+  '130', // Ixion
+]);
+
 export const MountPacks: ItemPack [] = [
-  allMounts, trialPack, raidMounts, eurekaMounts, questMounts, feastMounts, bozjaMounts
+  allMounts, trialPack, raidMounts, eurekaMounts, questMounts, feastMounts, bozjaMounts, fateMounts
 ];
