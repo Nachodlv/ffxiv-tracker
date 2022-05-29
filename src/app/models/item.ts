@@ -6,14 +6,19 @@ export class Item implements Model {
 
   static fromJson(json: any, itemType?: ItemType): Item {
     return new Item(
-      this.addUrl(json.IconSmall != null ? json.IconSmall : json.Icon),
+      json.Icon,
       json.Name,
       json.UrlType === 'Mount' || itemType === ItemType.Mount ? ItemType.Mount : ItemType.Minion,
       json.ID + '');
   }
 
-  private static addUrl(icon: string): string {
-    return icon.includes('https') ? icon : `https://xivapi.com${icon}`;
+  public tryGenerateNewIconUrl(): void {
+    if (this.icon.includes('https')) {
+      // The url has already been generated
+      return;
+    }
+    const newId = +this.icon.substr(this.icon.length - 7, 3) + 4000;
+    this.icon =  `https://xivapi.com/i/004000/00${newId}.png`;
   }
 
   fromJson(json: any): Model {

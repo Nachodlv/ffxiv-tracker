@@ -11,8 +11,8 @@ import {PaginationResult} from '../../models/pagination-result';
 })
 export class ItemService {
 
-  private allMountsUrl = 'Mount?columns=ID,Name,IconSmall,UrlType';
-  private allMinionsUrl = 'Companion?columns=ID,Name,IconSmall,UrlType';
+  private allMountsUrl = 'Mount?columns=ID,Name,Icon,UrlType';
+  private allMinionsUrl = 'Companion?columns=ID,Name,Icon,UrlType';
 
   mounts = new LocalStorageSubject<Item[]>('mounts');
   minions = new LocalStorageSubject<Item[]>('minions');
@@ -40,19 +40,20 @@ export class ItemService {
   }
 
   getAllMounts(): Observable<Item[]> {
-    return this.mounts.get('', () => this.getAllItems(this.allMountsUrl));
+    return this.mounts.get('', () => this.getAllItems(this.allMountsUrl, ItemType.Mount));
   }
 
   getAllMinions(): Observable<Item[]> {
-    return this.minions.get('', () => this.getAllItems(this.allMinionsUrl));
+    return this.minions.get('', () => this.getAllItems(this.allMinionsUrl, ItemType.Minion));
   }
 
-  private getAllItems(url: string, page: number = 1, items: Item[] = []): Observable<Item[]> {
+  private getAllItems(url: string, itemType: ItemType, page: number = 1, items: Item[] = []): Observable<Item[]> {
     return this.ffxivHttpClientService.get(`${url}&page=${page}`).pipe(flatMap(response => {
-      const itemPagination = PaginationResult.fromJson(response, new Item('', '', ItemType.Minion));
+      const itemPagination = PaginationResult.fromJson(response, new Item('', '', itemType));
       const newItems = [...items, ...itemPagination.results.filter(item => item.name)];
+      newItems.forEach(item => { item.itemType = itemType; item.tryGenerateNewIconUrl(); });
       if (itemPagination.pagination.page < itemPagination.pagination.pageTotal) {
-        return this.getAllItems(url, page + 1, newItems);
+        return this.getAllItems(url, itemType, page + 1, newItems);
       } else {
         return of(newItems);
       }

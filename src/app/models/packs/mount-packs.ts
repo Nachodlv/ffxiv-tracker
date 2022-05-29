@@ -107,7 +107,7 @@ const bozjaMounts = new ItemPack('Bozja', ItemType.Mount, [
   '213', // Construct 14
 ]);
 
-const fateMounts = new ItemPack('Fate', ItemType.Mount, [
+const fateMounts = new ItemPack('Fates', ItemType.Mount, [
   '268', // Level Checker
   '191', // Ironfrog Mover
   '130', // Ixion
